@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Styler</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+::-webkit-scrollbar { width: 0; height: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #FDF6F0;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+button { cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.15s; }
+button:active { opacity: 0.8; }
+input, textarea { font-family: 'DM Sans', sans-serif; outline: none; }
+
+/* ── Onboarding ── */
+#onboarding {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #F7E1E8 0%, #FDF6F0 50%, #E8DCF5 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 24px;
+}
+.onboard-card {
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(10px);
+  border-radius: 28px;
+  padding: 28px 24px;
+  width: 100%;
+  box-shadow: 0 8px 40px rgba(180,100,120,0.12);
+  border: 1px solid #EDD8E0;
+}
+.brand-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 42px;
+  color: #B85A72;
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: -1px;
+}
+.onboard-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: #3A2D35;
+  margin-bottom: 4px;
+}
+.onboard-sub { font-size: 13px; color: #9A8A90; margin-bottom: 20px; }
+.dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
+.dot { height: 6px; border-radius: 3px; background: #F2C4CE; transition: width 0.3s; }
+.dot.active { background: #D4748C; width: 20px; }
+.dot.inactive { width: 6px; }
+
+/* ── Chip / tag ── */
+.chip {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.chip.active { background: #D4748C; color: #fff; }
+.chip.inactive { background: #F7E1E8; color: #B85A72; }
+.chip.purple-inactive { background: #FDF6F0; color: #9B7FC4; }
+.chip.purple-active { background: #E8DCF5; color: #9B7FC4; font-weight: 600; }
+
+/* ── Main layout ── */
+#app { display: none; flex-direction: column; min-height: 100vh; padding-bottom: 80px; }
+
+/* ── Top bar ── */
+.topbar {
+  background: #fff;
+  padding: 16px 20px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid #EDD8E0;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; color: #B85A72; letter-spacing: -0.5px;
+}
+.avatar {
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F2C4CE, #E8DCF5);
+  display: flex; align-items: center; justify-content: center;
+  color: #B85A72; font-weight: 600; font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* ── Tab content ── */
+.tab-content { display: none; flex: 1; overflow-y: auto; }
+.tab-content.active { display: block; }
+
+/* ── Chat ── */
+.chat-area { padding: 16px 16px 0; }
+.bubble-row { display: flex; margin-bottom: 8px; gap: 8px; align-items: flex-end; }
+.bubble-row.user { justify-content: flex-end; }
+.bubble-row.ai { justify-content: flex-start; }
+.bubble {
+  max-width: 75%; border-radius: 18px;
+  padding: 10px 14px; font-size: 14px; line-height: 1.5;
+  box-shadow: 0 1px 6px rgba(180,100,120,0.1);
+}
+.bubble.user {
+  background: linear-gradient(135deg, #B85A72, #9B7FC4);
+  color: #fff; border-radius: 18px 18px 4px 18px;
+}
+.bubble.ai {
+  background: #fff; color: #3A2D35;
+  border: 1px solid #EDD8E0;
+  border-radius: 18px 18px 18px 4px;
+}
+.chat-input-row {
+  padding: 10px 14px;
+  background: #fff;
+  border-top: 1px solid #EDD8E0;
+  display: flex; gap: 10px; align-items: flex-end;
+}
+.chat-input-row textarea {
+  flex: 1; border: 1px solid #EDD8E0;
+  border-radius: 18px; padding: 10px 14px;
+  font-size: 13px; resize: none;
+  background: #F7E1E8; color: #3A2D35;
+}
+.send-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, #D4748C, #9B7FC4);
+  border: none; color: #fff; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Outfit cards ── */
+.outfits-scroll { overflow-x: auto; padding: 0 16px 16px; }
+.outfits-row { display: flex; gap: 12px; width: max-content; }
+.outfit-card {
+  background: #fff; border-radius: 20px;
+  border: 1px solid #EDD8E0; padding: 14px;
+  min-width: 160px; flex-shrink: 0; cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+.outfit-card.selected {
+  border: 2px solid #D4748C;
+  box-shadow: 0 4px 16px rgba(180,100,120,0.18);
+}
+.outfit-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4px; margin-bottom: 10px;
+  border-radius: 12px; overflow: hidden;
+}
+.outfit-cell {
+  height: 64px; display: flex;
+  align-items: center; justify-content: center; font-size: 26px;
+}
+
+/* ── Shop card ── */
+.shop-card {
+  background: #fff; border-radius: 20px;
+  border: 1px solid #EDD8E0; overflow: hidden;
+  box-shadow: 0 2px 12px rgba(180,100,120,0.07);
+}
+.shop-card img {
+  width: 100%; height: 180px;
+  object-fit: cover; display: block;
+}
+.shop-card-body { padding: 12px 14px 14px; }
+.match-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: #B85A72; color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 10px;
+}
+.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── Closet ── */
+.closet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.closet-item {
+  background: #fff; border-radius: 16px;
+  border: 1px solid #EDD8E0; padding: 12px 8px;
+  cursor: pointer; transition: all 0.15s;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px; position: relative;
+}
+.closet-item.selected { border: 2px solid #D4748C; }
+.closet-emoji-box {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+
+/* ── Stats row ── */
+.stats-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.stat-box {
+  flex: 1; background: #fff; border-radius: 14px;
+  border: 1px solid #EDD8E0; padding: 10px 8px; text-align: center;
+}
+
+/* ── Inspo masonry ── */
+.inspo-grid { columns: 2; column-gap: 10px; }
+.inspo-item {
+  break-inside: avoid; margin-bottom: 10px;
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid #EDD8E0; position: relative;
+}
+.inspo-item img { width: 100%; display: block; object-fit: cover; }
+.inspo-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(58,45,53,0.6));
+  padding: 20px 10px 8px;
+}
+
+/* ── Bottom nav ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid #EDD8E0;
+  display: flex; padding: 6px 0 10px;
+  z-index: 20;
+}
+.nav-btn {
+  flex: 1; background: transparent; border: none;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 2px; padding: 4px 0;
+}
+.nav-icon {
+  width: 36px; height: 36px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: all 0.2s;
+}
+.nav-icon.active { background: linear-gradient(135deg, #F2C4CE, #E8DCF5); }
+.nav-label { font-size: 10px; transition: color 0.2s; }
+.nav-label.active { color: #B85A72; font-weight: 600; }
+.nav-label.inactive { color: #9A8A90; }
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(58,45,53,0.5);
+  z-index: 100; display: none;
+  align-items: flex-end;
+}
+.modal-overlay.open { display: flex; }
+.modal-sheet {
+  background: #fff; border-radius: 24px 24px 0 0;
+  padding: 24px 20px 36px; width: 100%;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
+}
+.modal-handle {
+  width: 40px; height: 4px;
+  background: #EDD8E0; border-radius: 2px;
+  margin: 0 auto 20px;
+}
+.modal-center-overlay {
+  position: fixed; inset: 0;
+  background: rgba(58,45,53,0.6);
+  z-index: 100; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-center-overlay.open { display: flex; }
+.modal-center-box {
+  background: #fff; border-radius: 24px;
+  padding: 24px; width: 100%; max-width: 360px;
+}
+
+/* ── Misc ── */
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.section-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: #3A2D35; }
+.white-card { background: #fff; border-radius: 20px; border: 1px solid #EDD8E0; padding: 16px; }
+.pill-btn {
+  display: inline-block; padding: 6px 14px;
+  border-radius: 20px; border: 1px solid #EDD8E0;
+  background: #fff; font-size: 12px;
+  color: #3A2D35; cursor: pointer; white-space: nowrap;
+}
+.pill-btn.active { background: #D4748C; color: #fff; border-color: #D4748C; font-weight: 600; }
+.tag {
+  display: inline-block;
+  background: #E8DCF5; color: #B85A72;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 20px;
+  letter-spacing: 0.3px; white-space: nowrap;
+}
+.tag.sage { background: #D6E8D8; }
+.tag.rose { background: rgba(255,255,255,0.7); }
+.color-dot {
+  display: inline-block; border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.08); flex-shrink: 0;
+}
+.primary-btn {
+  width: 100%; border: none; border-radius: 14px; padding: 14px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  background: linear-gradient(135deg, #D4748C, #9B7FC4);
+  color: #fff; box-shadow: 0 4px 16px rgba(180,100,120,0.3);
+}
+.secondary-btn {
+  background: #F7E1E8; color: #B85A72;
+  border: none; border-radius: 14px; padding: 12px 20px;
+  font-size: 14px; cursor: pointer;
+}
+.scroll-row { overflow-x: auto; }
+.scroll-inner { display: flex; gap: 8px; width: max-content; padding-bottom: 2px; }
+
+/* profile */
+.profile-header {
+  background: linear-gradient(135deg, #F7E1E8, #E8DCF5);
+  border-radius: 24px; padding: 24px 20px; margin-bottom: 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.settings-list { background: #fff; border-radius: 20px; border: 1px solid #EDD8E0; overflow: hidden; }
+.settings-row {
+  width: 100%; background: transparent; border: none;
+  padding: 14px 16px; border-bottom: 1px solid #EDD8E0;
+  display: flex; align-items: center; gap: 12px; cursor: pointer; text-align: left;
+}
+.settings-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════ ONBOARDING -->
+<div id="onboarding">
+  <div class="brand-title">Styler</div>
+  <div class="onboard-card">
+    <div id="step-0">
+      <h2 class="onboard-title">Welcome to Styler</h2>
+      <p class="onboard-sub">Your personal AI styling companion</p>
+      <div style="text-align:center; padding: 16px 0;">
+        <div style="font-size:64px; margin-bottom:12px;">✨</div>
+        <p style="color:#9A8A90; line-height:1.6; font-size:14px;">
+          Build your digital closet, get AI-powered outfit suggestions and discover pieces curated just for you.
+        </p>
+      </div>
+    </div>
+
+    <div id="step-1" style="display:none;">
+      <h2 class="onboard-title">Tell us about you</h2>
+      <p class="onboard-sub">So we can style you perfectly</p>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div>
+          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Body shape</p>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="body-chips">
+            <button class="chip active" onclick="selectChip(this,'body-chips')">Hourglass</button>
+            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Pear</button>
+            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Apple</button>
+            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Rectangle</button>
+            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Inverted triangle</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Skin tone</p>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="tone-chips">
+            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Fair</button>
+            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Light</button>
+            <button class="chip active" onclick="selectChip(this,'tone-chips')">Medium warm</button>
+            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Olive</button>
+            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Deep warm</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Your vibe</p>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="vibe-chips">
+            <button class="chip purple-active" onclick="selectVibeChip(this)">Soft & feminine</button>
+            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Clean girl</button>
+            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Y2K</button>
+            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Minimalist</button>
+            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Streetwear</button>
+            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Romantic</button>
+            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Dark academia</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Hair colour</p>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="hair-chips">
+            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Blonde</button>
+            <button class="chip active" onclick="selectChip(this,'hair-chips')">Brunette</button>
+            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Black</button>
+            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Red</button>
+            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Other</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="step-2" style="display:none;">
+      <h2 class="onboard-title">Choose your plan</h2>
+      <p class="onboard-sub">Start free for 7 days</p>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="background:#fff; border-radius:16px; border:2px solid #D4748C; padding:14px 16px; position:relative;">
+          <div style="position:absolute; top:-10px; right:14px; background:#D4748C; color:#fff; font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px;">MOST POPULAR</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <p style="font-weight:700; font-size:15px; color:#3A2D35;">Styler Premium</p>
+              <p style="font-size:12px; color:#9A8A90; margin-top:2px;">8€ / month — 7 days free</p>
+            </div>
+            <span style="font-size:22px;">💎</span>
+          </div>
+          <ul style="margin-top:10px; padding-left:16px; font-size:12px; color:#9A8A90; line-height:1.9;">
+            <li>Unlimited AI outfit suggestions</li>
+            <li>Digital closet (unlimited items)</li>
+            <li>Virtual try-on</li>
+            <li>Weekly outfit planning</li>
+          </ul>
+        </div>
+        <div style="background:#FDF6F0; border-radius:16px; border:1px solid #EDD8E0; padding:14px 16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <p style="font-weight:600; font-size:14px; color:#3A2D35;">Just explore</p>
+              <p style="font-size:12px; color:#9A8A90; margin-top:2px;">Free demo — limited features</p>
+            </div>
+            <span style="font-size:22px;">👀</span>
+          </div>
+        </div>
+        <div style="background:#fff; border-radius:16px; border:1px solid #EDD8E0; padding:14px 16px; margin-top:4px;">
+          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:8px;">🔒 Developer panel — payment destination</p>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <input placeholder="Bank / Stripe account name" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
+            <input placeholder="IBAN or account number" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
+            <button style="background:#D4748C; color:#fff; border:none; border-radius:10px; padding:9px; font-size:12px; font-weight:600;">Save payment details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px; display:flex; gap:10px; align-items:center;">
+      <button class="secondary-btn" id="back-btn" style="display:none;" onclick="prevStep()">Back</button>
+      <button class="primary-btn" onclick="nextStep()" id="next-btn">Continue</button>
+    </div>
+    <div class="dots" id="dots">
+      <div class="dot active" id="dot-0"></div>
+      <div class="dot inactive" id="dot-1"></div>
+      <div class="dot inactive" id="dot-2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ MAIN APP -->
+<div id="app">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <span class="topbar-title">Styler</span>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <span id="topbar-meta" style="font-size:12px; color:#9A8A90;">📍 Lisboa · 24°C ☀️</span>
+      <div class="avatar" style="width:32px; height:32px; font-size:13px;">S</div>
+    </div>
+  </div>
+
+  <!-- ── OUTFIT TAB ──────────────────────────────────────────────────── -->
+  <div class="tab-content active" id="tab-outfit">
+    <div class="chat-area" id="chat-messages"></div>
+
+    <!-- Quick chips -->
+    <div class="scroll-row" style="padding:8px 16px;" id="quick-chips">
+      <div class="scroll-inner">
+        <button class="pill-btn" onclick="setInput('Today\'s outfit')">Today's outfit</button>
+        <button class="pill-btn" onclick="setInput('Tomorrow')">Tomorrow</button>
+        <button class="pill-btn" onclick="setInput('This week')">This week</button>
+        <button class="pill-btn" onclick="setInput('Brunch plans')">Brunch plans</button>
+        <button class="pill-btn" onclick="setInput('Girls night out')">Girls night out</button>
+      </div>
+    </div>
+
+    <div class="chat-input-row">
+      <textarea id="chat-input" rows="1" placeholder="Describe your event or ask for an outfit..."></textarea>
+      <button class="send-btn" onclick="sendMessage()">↑</button>
+    </div>
+
+    <!-- Outfit results (hidden until generated) -->
+    <div id="outfit-results" style="display:none; background:#FDF6F0;">
+      <div style="padding:16px 16px 10px; display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:15px; font-weight:600; color:#3A2D35;">Your outfits</h3>
+        <span style="font-size:12px; color:#9A8A90;">Swipe →</span>
+      </div>
+      <div class="outfits-scroll">
+        <div class="outfits-row" id="outfits-row"></div>
+      </div>
+
+      <!-- Selected outfit detail -->
+      <div style="padding:0 16px 16px;">
+        <div class="white-card" id="outfit-detail"></div>
+      </div>
+
+      <!-- Picked for you -->
+      <div style="padding:0 16px;">
+        <h3 style="font-size:15px; font-weight:600; color:#3A2D35; margin-bottom:12px;">Picked for you</h3>
+        <div class="shop-grid" id="outfit-shop-grid" style="margin-bottom:20px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CLOSET TAB ──────────────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-closet" style="padding:16px 16px 0; overflow-y:auto;">
+    <div class="section-header">
+      <span class="section-title">Your Closet</span>
+      <button onclick="openUploadModal()" style="background:#D4748C; color:#fff; border:none; border-radius:20px; padding:8px 16px; font-size:13px; font-weight:600;">+ Add item</button>
+    </div>
+
+    <div class="scroll-row" style="margin-bottom:14px;">
+      <div class="scroll-inner" id="closet-filters">
+        <button class="pill-btn active" onclick="filterCloset('all',this)">All</button>
+        <button class="pill-btn" onclick="filterCloset('Tops',this)">Tops</button>
+        <button class="pill-btn" onclick="filterCloset('Bottoms',this)">Bottoms</button>
+        <button class="pill-btn" onclick="filterCloset('Dresses',this)">Dresses</button>
+        <button class="pill-btn" onclick="filterCloset('Outerwear',this)">Outerwear</button>
+        <button class="pill-btn" onclick="filterCloset('Shoes',this)">Shoes</button>
+        <button class="pill-btn" onclick="filterCloset('Accessories',this)">Accessories</button>
+        <button class="pill-btn" onclick="filterCloset('Favs',this)">♥ Favs</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><p style="font-size:20px; font-weight:700; color:#B85A72;">10</p><p style="font-size:10px; color:#9A8A90;">Items</p></div>
+      <div class="stat-box"><p style="font-size:20px; font-weight:700; color:#B85A72;">5</p><p style="font-size:10px; color:#9A8A90;">Favourites</p></div>
+      <div class="stat-box"><p style="font-size:20px; font-weight:700; color:#B85A72;">4</p><p style="font-size:10px; color:#9A8A90;">Outfits</p></div>
+    </div>
+
+    <div class="closet-grid" id="closet-grid" style="margin-bottom:16px;"></div>
+
+    <div id="tryon-bar" style="display:none; position:sticky; bottom:88px; background:rgba(253,246,240,0.95); padding:12px 0;">
+      <button class="primary-btn" onclick="openTryonModal()" id="tryon-btn">Try on selected items ✨</button>
+    </div>
+  </div>
+
+  <!-- ── INSPO TAB ──────────────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-inspo" style="padding:16px 16px 0; overflow-y:auto;">
+    <div class="section-header">
+      <span class="section-title">Inspo Board</span>
+      <button style="background:#D4748C; color:#fff; border:none; border-radius:20px; padding:8px 16px; font-size:13px; font-weight:600;">+ Add</button>
+    </div>
+    <p style="font-size:13px; color:#9A8A90; margin-bottom:14px; line-height:1.6;">
+      Upload Pinterest boards, screenshots, or photos. I'll learn your style from them.
+    </p>
+    <div class="inspo-grid" id="inspo-grid" style="margin-bottom:16px;"></div>
+    <div style="background:#fff; border-radius:20px; border:1px dashed #EDD8E0; padding:24px; text-align:center; margin-bottom:16px;">
+      <div style="font-size:32px; margin-bottom:8px;">📌</div>
+      <p style="font-size:14px; font-weight:600; color:#3A2D35; margin-bottom:4px;">Add from Pinterest</p>
+      <p style="font-size:12px; color:#9A8A90; margin-bottom:12px;">Paste a board link or upload screenshots</p>
+      <button style="background:#D4748C; color:#fff; border:none; border-radius:14px; padding:10px 24px; font-size:13px; font-weight:600;">Connect Pinterest</button>
+    </div>
+  </div>
+
+  <!-- ── BROWSE TAB ──────────────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-browse" style="padding:16px 16px 0; overflow-y:auto;">
+    <h2 class="section-title" style="margin-bottom:14px;">Browse</h2>
+
+    <div style="background:#fff; border:1px solid #EDD8E0; border-radius:20px; padding:10px 16px; display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+      <span style="font-size:16px; color:#9A8A90;">🔍</span>
+      <input placeholder="Search items, brands, styles..." style="border:none; background:transparent; font-size:13px; flex:1; color:#3A2D35;" />
+    </div>
+
+    <div class="scroll-row" style="margin-bottom:12px;">
+      <div class="scroll-inner" id="brand-filters">
+        <button class="pill-btn active" onclick="filterBrand('all',this)">All</button>
+        <button class="pill-btn" onclick="filterBrand('Zara',this)">Zara</button>
+        <button class="pill-btn" onclick="filterBrand('H&M',this)">H&M</button>
+        <button class="pill-btn" onclick="filterBrand('Mango',this)">Mango</button>
+        <button class="pill-btn" onclick="filterBrand('Bershka',this)">Bershka</button>
+        <button class="pill-btn" onclick="filterBrand('Pull&Bear',this)">Pull&Bear</button>
+      </div>
+    </div>
+
+    <div style="background:#fff; border-radius:16px; border:1px solid #EDD8E0; padding:12px 14px; margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="font-size:12px; font-weight:600; color:#3A2D35;">Price range</span>
+        <span style="font-size:12px; color:#D4748C; font-weight:600;" id="price-label">0€ – 100€</span>
+      </div>
+      <input type="range" min="0" max="200" step="5" value="100" style="width:100%; accent-color:#D4748C;" oninput="updatePrice(this.value)" />
+      <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
+        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(20)">Under 20€</button>
+        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(50)">20–50€</button>
+        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(100)">50–100€</button>
+        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(200)">100€+</button>
+      </div>
+    </div>
+
+    <div class="scroll-row" style="margin-bottom:14px;">
+      <div class="scroll-inner">
+        <button class="pill-btn">New in</button>
+        <button class="pill-btn">Tops</button>
+        <button class="pill-btn">Dresses</button>
+        <button class="pill-btn">Bottoms</button>
+        <button class="pill-btn">Shoes</button>
+        <button class="pill-btn">Accessories</button>
+      </div>
+    </div>
+
+    <div class="shop-grid" id="browse-grid" style="margin-bottom:20px;"></div>
+  </div>
+
+  <!-- ── ACCOUNT TAB ──────────────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-account" style="padding:16px 16px 0; overflow-y:auto;">
+    <div class="profile-header">
+      <div class="avatar" style="width:60px; height:60px; font-size:22px;">S</div>
+      <div style="text-align:center;">
+        <h2 style="font-family:'DM Serif Display', serif; font-size:22px; color:#B85A72;">Sofia</h2>
+        <span class="tag rose">Premium · Trial active</span>
+      </div>
+    </div>
+
+    <div class="white-card" style="margin-bottom:12px;">
+      <h3 style="font-size:15px; font-weight:600; color:#3A2D35; margin-bottom:14px;">Style profile</h3>
+      <div id="profile-rows"></div>
+      <div style="padding-top:10px;">
+        <p style="font-size:12px; color:#9A8A90; margin-bottom:6px;">Preferred colours</p>
+        <div style="display:flex; gap:6px; align-items:center;" id="color-dots"></div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(212,116,140,0.13),rgba(155,127,196,0.13)); border-radius:20px; border:1px solid #EDD8E0; padding:16px; margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <h3 style="font-size:15px; font-weight:600; color:#3A2D35;">Subscription</h3>
+        <span class="tag" style="background:#F2C4CE;">Active</span>
+      </div>
+      <p style="font-size:13px; color:#9A8A90;">Styler Premium · 8€/month</p>
+      <p style="font-size:12px; color:#9A8A90; margin-bottom:12px;">Free trial ends in 6 days</p>
+      <div style="background:#fff; border-radius:12px; padding:10px 14px; border:1px solid #EDD8E0; margin-bottom:10px;">
+        <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:4px;">Payment method</p>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px; color:#3A2D35;">•••• •••• •••• 4829</span>
+          <span class="tag">Edit</span>
+        </div>
+      </div>
+      <p style="font-size:11px; color:#9A8A90;">You won't be charged until the trial ends. Cancel anytime.</p>
+    </div>
+
+    <div class="white-card" style="margin-bottom:12px;">
+      <h3 style="font-size:14px; font-weight:600; color:#3A2D35; margin-bottom:4px;">🔒 Developer panel</h3>
+      <p style="font-size:12px; color:#9A8A90; margin-bottom:12px;">Subscription revenue destination</p>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <input placeholder="Bank / Stripe account name" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
+        <input placeholder="IBAN or account number" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
+        <button style="background:#D4748C; color:#fff; border:none; border-radius:12px; padding:10px; font-size:13px; font-weight:600;">Save payment details</button>
+      </div>
+    </div>
+
+    <div class="settings-list" style="margin-bottom:20px;" id="settings-list"></div>
+  </div>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<!-- ── UPLOAD MODAL -->
+<div class="modal-overlay" id="upload-modal" onclick="closeUploadModal()">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <h3 style="font-family:'DM Serif Display',serif; font-size:20px; color:#3A2D35; margin-bottom:16px;">Add to closet</h3>
+    <div id="upload-options"></div>
+  </div>
+</div>
+
+<!-- ── TRY-ON MODAL -->
+<div class="modal-center-overlay" id="tryon-modal" onclick="closeTryonModal()">
+  <div class="modal-center-box" onclick="event.stopPropagation()">
+    <h3 style="font-family:'DM Serif Display',serif; font-size:20px; color:#3A2D35; margin-bottom:4px;">Virtual Try-On ✨</h3>
+    <p style="font-size:13px; color:#9A8A90; margin-bottom:16px;">Allow camera access to see the AI fabric mapping on you.</p>
+    <div style="height:220px; background:#F7E1E8; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; margin-bottom:16px;">
+      <div style="font-size:48px;">📸</div>
+      <p style="font-size:13px; color:#9A8A90;">Camera preview</p>
+      <button style="background:#D4748C; color:#fff; border:none; border-radius:20px; padding:8px 20px; font-size:13px;">Allow camera</button>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button onclick="closeTryonModal()" style="flex:1; background:#FDF6F0; color:#3A2D35; border:1px solid #EDD8E0; border-radius:14px; padding:12px; font-size:13px;">Close</button>
+      <button style="flex:2; background:linear-gradient(135deg,#D4748C,#9B7FC4); color:#fff; border:none; border-radius:14px; padding:12px; font-size:13px; font-weight:600;">Start try-on</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════ DATA
+
+const CLOSET_ITEMS = [
+  { id:1, name:"White Linen Shirt", brand:"Zara", category:"Tops", color:"#F5F0E8", emoji:"👕", fav:true },
+  { id:2, name:"High-waist Jeans", brand:"Mango", category:"Bottoms", color:"#6B8CAE", emoji:"👖", fav:false },
+  { id:3, name:"Midi Floral Dress", brand:"H&M", category:"Dresses", color:"#E8B4C8", emoji:"👗", fav:true },
+  { id:4, name:"Blazer Beige", brand:"Bershka", category:"Outerwear", color:"#C8B89A", emoji:"🧥", fav:false },
+  { id:5, name:"Mini Skirt White", brand:"Pull&Bear", category:"Bottoms", color:"#F0ECE8", emoji:"🩱", fav:true },
+  { id:6, name:"Ribbed Crop Top", brand:"Zara", category:"Tops", color:"#D4C4E0", emoji:"👚", fav:false },
+  { id:7, name:"Denim Jacket", brand:"Levi's", category:"Outerwear", color:"#5C7A9A", emoji:"🧥", fav:false },
+  { id:8, name:"Ballet Flats", brand:"Mango", category:"Shoes", color:"#C8A882", emoji:"👟", fav:true },
+  { id:9, name:"Gold Hoop Earrings", brand:"Pandora", category:"Accessories", color:"#D4AF37", emoji:"💛", fav:true },
+  { id:10, name:"Satin Slip Dress", brand:"H&M", category:"Dresses", color:"#A8C4B0", emoji:"👗", fav:false },
+];
+
+const OUTFITS = [
+  { id:1, name:"Soft Sunday", items:[1,5,8,9], vibe:"Casual", colors:["#F5F0E8","#F0ECE8","#C8A882","#D4AF37"] },
+  { id:2, name:"City Girl", items:[6,2,7,8], vibe:"Streetwear", colors:["#D4C4E0","#6B8CAE","#5C7A9A","#C8A882"] },
+  { id:3, name:"Garden Party", items:[3,8,9], vibe:"Feminine", colors:["#E8B4C8","#C8A882","#D4AF37"] },
+  { id:4, name:"Smart Casual", items:[4,2,8,9], vibe:"Office", colors:["#C8B89A","#6B8CAE","#C8A882","#D4AF37"] },
+];
+
+const SHOP_ITEMS = [
+  { id:1, name:"Poplin Mini Dress", brand:"Zara", price:"35.95€", img:"https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=400&q=80", store:"Zara Colombo, Lisboa", match:"97%" },
+  { id:2, name:"Knit Cardigan", brand:"H&M", price:"24.99€", img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80", store:"H&M Colombo, Lisboa", match:"94%" },
+  { id:3, name:"Flare Trousers", brand:"Mango", price:"39.99€", img:"https://images.unsplash.com/photo-1594938298603-c8148c4b4e03?w=400&q=80", store:"Mango Amoreiras, Lisboa", match:"91%" },
+  { id:4, name:"Linen Coord Set", brand:"Bershka", price:"49.90€", img:"https://images.unsplash.com/photo-1612336307429-8a898d10e223?w=400&q=80", store:"Bershka Vasco, Lisboa", match:"89%" },
+];
+
+const INSPO_IMGS = [
+  { src:"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=300&q=80", h:200 },
+  { src:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80", h:150 },
+  { src:"https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=300&q=80", h:180 },
+  { src:"https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=300&q=80", h:150 },
+  { src:"https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&q=80", h:200 },
+  { src:"https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=300&q=80", h:150 },
+];
+
+const AI_REPLIES = [
+  "Lovely! And what's the weather like? I see you're in Lisbon — looks like 24°C and sunny today 🌤",
+  "Perfect for a light summer look! Any colour preferences today, or shall I pull from your usual palette?",
+  "Got it! Generating outfits from your closet now — I also found some pieces you might love to complete the look 💫",
+];
+
+// ══════════════════════════════════════════════════════════════════════ STATE
+let currentStep = 0;
+let currentTab = 'outfit';
+let msgCount = 0;
+let outfitsShown = false;
+let selectedOutfit = 0;
+let selectedClosetItems = [];
+let closetFilter = 'all';
+let brandFilter = 'all';
+
+// ══════════════════════════════════════════════════════════════════════ ONBOARDING
+
+function nextStep() {
+  if (currentStep < 2) {
+    document.getElementById('step-' + currentStep).style.display = 'none';
+    currentStep++;
+    document.getElementById('step-' + currentStep).style.display = 'block';
+    document.getElementById('back-btn').style.display = currentStep > 0 ? 'inline-block' : 'none';
+    if (currentStep === 2) document.getElementById('next-btn').textContent = "Let's go ✨";
+    updateDots();
+  } else {
+    launchApp();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    document.getElementById('step-' + currentStep).style.display = 'none';
+    currentStep--;
+    document.getElementById('step-' + currentStep).style.display = 'block';
+    document.getElementById('back-btn').style.display = currentStep > 0 ? 'inline-block' : 'none';
+    document.getElementById('next-btn').textContent = 'Continue';
+    updateDots();
+  }
+}
+
+function updateDots() {
+  for (let i = 0; i < 3; i++) {
+    const d = document.getElementById('dot-' + i);
+    d.className = 'dot ' + (i === currentStep ? 'active' : 'inactive');
+  }
+}
+
+function selectChip(btn, groupId) {
+  document.querySelectorAll('#' + groupId + ' .chip').forEach(b => {
+    b.className = 'chip inactive';
+  });
+  btn.className = 'chip active';
+}
+
+function selectVibeChip(btn) {
+  document.querySelectorAll('#vibe-chips .chip').forEach(b => {
+    b.className = 'chip purple-inactive';
+  });
+  btn.className = 'chip purple-active';
+}
+
+function launchApp() {
+  document.getElementById('onboarding').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  initApp();
+}
+
+// ══════════════════════════════════════════════════════════════════════ INIT APP
+
+function initApp() {
+  renderNav();
+  addAIMessage("Hi! I'm your Styler AI. Tell me about your event and I'll put together some outfits for you. What's the occasion?");
+  renderCloset();
+  renderInspo();
+  renderBrowse();
+  renderShopGrid('outfit-shop-grid', SHOP_ITEMS.slice(0, 2));
+  renderProfileRows();
+  renderSettings();
+  document.getElementById('chat-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  renderUploadOptions();
+}
+
+// ══════════════════════════════════════════════════════════════════════ BOTTOM NAV
+
+const TABS = [
+  { id:'outfit', label:'Outfit', icon:'✦' },
+  { id:'closet', label:'Closet', icon:'🪞' },
+  { id:'inspo', label:'Inspo', icon:'📌' },
+  { id:'browse', label:'Browse', icon:'🛍' },
+  { id:'account', label:'You', icon:'☽' },
+];
+
+function renderNav() {
+  const nav = document.getElementById('bottom-nav');
+  nav.innerHTML = TABS.map(t => `
+    <button class="nav-btn" onclick="switchTab('${t.id}')" id="nav-${t.id}">
+      <div class="nav-icon ${t.id === currentTab ? 'active' : ''}" id="nav-icon-${t.id}">${t.icon}</div>
+      <span class="nav-label ${t.id === currentTab ? 'active' : 'inactive'}" id="nav-label-${t.id}">${t.label}</span>
+    </button>
+  `).join('');
+}
+
+function switchTab(id) {
+  // Hide all
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+
+  // Update nav
+  TABS.forEach(t => {
+    document.getElementById('nav-icon-' + t.id).className = 'nav-icon' + (t.id === id ? ' active' : '');
+    document.getElementById('nav-label-' + t.id).className = 'nav-label ' + (t.id === id ? 'active' : 'inactive');
+  });
+
+  // Topbar meta
+  document.getElementById('topbar-meta').style.display = id === 'outfit' ? 'inline' : 'none';
+  currentTab = id;
+}
+
+// ══════════════════════════════════════════════════════════════════════ CHAT
+
+function addAIMessage(text) {
+  const area = document.getElementById('chat-messages');
+  const row = document.createElement('div');
+  row.className = 'bubble-row ai';
+  row.innerHTML = `
+    <div class="avatar" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">S</div>
+    <div class="bubble ai">${text}</div>
+  `;
+  area.appendChild(row);
+  area.scrollTop = area.scrollHeight;
+}
+
+function addUserMessage(text) {
+  const area = document.getElementById('chat-messages');
+  const row = document.createElement('div');
+  row.className = 'bubble-row user';
+  row.innerHTML = `<div class="bubble user">${text}</div>`;
+  area.appendChild(row);
+  area.scrollTop = area.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  addUserMessage(text);
+  input.value = '';
+
+  setTimeout(() => {
+    const reply = AI_REPLIES[Math.min(msgCount, AI_REPLIES.length - 1)];
+    addAIMessage(reply);
+    msgCount++;
+    if (msgCount >= 2 && !outfitsShown) {
+      showOutfits();
+      outfitsShown = true;
+      document.getElementById('quick-chips').style.display = 'none';
+    }
+  }, 900);
+}
+
+function setInput(text) {
+  document.getElementById('chat-input').value = text;
+  document.getElementById('chat-input').focus();
+}
+
+// ══════════════════════════════════════════════════════════════════════ OUTFIT RESULTS
+
+function showOutfits() {
+  document.getElementById('outfit-results').style.display = 'block';
+  renderOutfitCards();
+  renderOutfitDetail(0);
+}
+
+function renderOutfitCards() {
+  const row = document.getElementById('outfits-row');
+  row.innerHTML = OUTFITS.map((o, i) => {
+    const items = CLOSET_ITEMS.filter(c => o.items.includes(c.id));
+    const cells = items.slice(0, 4).map((item, ci) => {
+      const radii = ['12px 0 0 0','0 12px 0 0','0 0 0 12px','0 0 12px 0'];
+      return `<div class="outfit-cell" style="background:${item.color}55; border-radius:${radii[ci]};">${item.emoji}</div>`;
+    }).join('');
+    const dots = o.colors.slice(0,4).map(c =>
+      `<span class="color-dot" style="width:12px;height:12px;background:${c};"></span>`
+    ).join('');
+    return `
+      <div class="outfit-card ${i === selectedOutfit ? 'selected' : ''}" id="ocard-${i}" onclick="selectOutfit(${i})">
+        <div class="outfit-grid">${cells}</div>
+        <p style="font-size:13px;font-weight:600;color:#3A2D35;">${o.name}</p>
+        <p style="font-size:11px;color:#9A8A90;margin-top:2px;">${o.vibe}</p>
+        <div style="display:flex;gap:3px;margin-top:6px;flex-wrap:wrap;">${dots}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectOutfit(i) {
+  selectedOutfit = i;
+  document.querySelectorAll('.outfit-card').forEach((c, ci) => {
+    c.className = 'outfit-card ' + (ci === i ? 'selected' : '');
+  });
+  renderOutfitDetail(i);
+}
+
+function renderOutfitDetail(i) {
+  const o = OUTFITS[i];
+  const items = CLOSET_ITEMS.filter(c => o.items.includes(c.id));
+  const detail = document.getElementById('outfit-detail');
+  const itemsHTML = items.map(item => `
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#F7E1E8;border-radius:12px;">
+      <span style="font-size:18px;">${item.emoji}</span>
+      <div>
+        <p style="font-size:11px;font-weight:600;color:#3A2D35;margin:0;">${item.name}</p>
+        <p style="font-size:10px;color:#9A8A90;margin:0;">${item.brand}</p>
+      </div>
+    </div>
+  `).join('');
+  detail.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <h4 style="font-size:14px;font-weight:600;color:#3A2D35;">${o.name}</h4>
+      <span class="tag">${o.vibe}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">${itemsHTML}</div>
+    <button onclick="openTryonModal()" style="width:100%;background:linear-gradient(135deg,#F2C4CE,#E8DCF5);border:none;border-radius:14px;padding:10px;font-size:13px;font-weight:600;color:#B85A72;">Try on virtually ✨</button>
+  `;
+}
+
+// ══════════════════════════════════════════════════════════════════════ SHOP CARD
+
+function shopCardHTML(item) {
+  return `
+    <div class="shop-card">
+      <div style="position:relative;">
+        <img src="${item.img}" alt="${item.name}" onerror="this.style.background='#F7E1E8';this.src=''" />
+        <div class="match-badge">${item.match} match</div>
+      </div>
+      <div class="shop-card-body">
+        <p style="font-size:13px;font-weight:600;color:#3A2D35;">${item.name}</p>
+        <p style="font-size:12px;color:#9A8A90;margin:2px 0 6px;">${item.brand}</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:15px;font-weight:700;color:#B85A72;">${item.price}</span>
+          <span class="tag sage">${item.store.split(',')[1]?.trim() || 'Lisboa'}</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <button style="flex:1;background:#D4748C;color:#fff;border:none;border-radius:10px;padding:8px 0;font-size:12px;font-weight:600;">Buy</button>
+          <button style="flex:1;background:#F7E1E8;color:#B85A72;border:1px solid #EDD8E0;border-radius:10px;padding:8px 0;font-size:12px;font-weight:600;">Wishlist</button>
+        </div>
+        <button style="width:100%;background:transparent;color:#9B7FC4;border:1px solid #E8DCF5;border-radius:10px;padding:7px 0;font-size:11px;">📍 Maps — ${item.store.split(',')[0]}</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderShopGrid(containerId, items) {
+  document.getElementById(containerId).innerHTML = items.map(shopCardHTML).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════ CLOSET
+
+function renderCloset(filter) {
+  filter = filter || closetFilter;
+  const grid = document.getElementById('closet-grid');
+  let items = CLOSET_ITEMS;
+  if (filter === 'Favs') items = items.filter(i => i.fav);
+  else if (filter !== 'all') items = items.filter(i => i.category === filter);
+
+  grid.innerHTML = items.map(item => {
+    const sel = selectedClosetItems.includes(item.id);
+    return `
+      <div class="closet-item ${sel ? 'selected' : ''}" id="ci-${item.id}" onclick="toggleClosetItem(${item.id})" style="background:${sel ? item.color+'55' : '#fff'};">
+        ${item.fav ? '<span style="position:absolute;top:6px;right:8px;font-size:10px;color:#D4748C;">♥</span>' : ''}
+        <div class="closet-emoji-box" style="background:${item.color}40;">${item.emoji}</div>
+        <p style="font-size:10px;font-weight:600;color:#3A2D35;text-align:center;line-height:1.3;">${item.name}</p>
+        <p style="font-size:9px;color:#9A8A90;">${item.brand}</p>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleClosetItem(id) {
+  if (selectedClosetItems.includes(id)) {
+    selectedClosetItems = selectedClosetItems.filter(x => x !== id);
+  } else {
+    selectedClosetItems.push(id);
+  }
+  renderCloset(closetFilter);
+  const bar = document.getElementById('tryon-bar');
+  const btn = document.getElementById('tryon-btn');
+  if (selectedClosetItems.length > 0) {
+    bar.style.display = 'block';
+    btn.textContent = `Try on ${selectedClosetItems.length} selected item${selectedClosetItems.length > 1 ? 's' : ''} ✨`;
+  } else {
+    bar.style.display = 'none';
+  }
+}
+
+function filterCloset(f, btn) {
+  closetFilter = f;
+  document.querySelectorAll('#closet-filters .pill-btn').forEach(b => b.className = 'pill-btn');
+  btn.className = 'pill-btn active';
+  renderCloset(f);
+}
+
+// ══════════════════════════════════════════════════════════════════════ INSPO
+
+function renderInspo() {
+  const grid = document.getElementById('inspo-grid');
+  grid.innerHTML = INSPO_IMGS.map(img => `
+    <div class="inspo-item">
+      <img src="${img.src}" style="height:${img.h}px;" alt="inspo" />
+      <div class="inspo-overlay">
+        <button style="background:rgba(255,255,255,0.9);color:#B85A72;border:none;border-radius:10px;padding:4px 10px;font-size:10px;font-weight:600;">Find items ✦</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════ BROWSE
+
+function renderBrowse(filter) {
+  filter = filter || brandFilter;
+  let items = SHOP_ITEMS;
+  if (filter !== 'all') items = items.filter(i => i.brand === filter);
+  renderShopGrid('browse-grid', items);
+}
+
+function filterBrand(b, btn) {
+  brandFilter = b;
+  document.querySelectorAll('#brand-filters .pill-btn').forEach(x => x.className = 'pill-btn');
+  btn.className = 'pill-btn active';
+  renderBrowse(b);
+}
+
+function updatePrice(val) {
+  document.getElementById('price-label').textContent = `0€ – ${val}€`;
+}
+
+function setPrice(val) {
+  document.querySelector('#tab-browse input[type=range]').value = val;
+  updatePrice(val);
+}
+
+// ══════════════════════════════════════════════════════════════════════ ACCOUNT
+
+function renderProfileRows() {
+  const rows = [
+    { label:'Body shape', val:'Hourglass' },
+    { label:'Skin tone', val:'Medium warm' },
+    { label:'Your style', val:'Soft feminine, minimal' },
+    { label:'Your size', val:'S / 36' },
+  ];
+  document.getElementById('profile-rows').innerHTML = rows.map((r, i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:${i < rows.length-1 ? '1px solid #EDD8E0' : 'none'};">
+      <span style="font-size:13px;color:#9A8A90;">${r.label}</span>
+      <span style="font-size:13px;font-weight:600;color:#3A2D35;">${r.val}</span>
+    </div>
+  `).join('');
+
+  const colors = ['#E8B4C8','#D4C4E0','#C8A882','#F5F0E8'];
+  document.getElementById('color-dots').innerHTML = colors.map(c =>
+    `<span class="color-dot" style="width:20px;height:20px;background:${c};"></span>`
+  ).join('') + `<button style="width:20px;height:20px;border-radius:50%;background:transparent;border:1.5px dashed #EDD8E0;font-size:12px;color:#9A8A90;display:inline-flex;align-items:center;justify-content:center;">+</button>`;
+}
+
+function renderSettings() {
+  const items = [
+    { icon:'✏️', label:'Edit style profile' },
+    { icon:'🔔', label:'Notifications' },
+    { icon:'🔒', label:'Privacy' },
+    { icon:'💬', label:'Help & feedback' },
+    { icon:'↩️', label:'Sign out' },
+  ];
+  document.getElementById('settings-list').innerHTML = items.map((s, i) => `
+    <button class="settings-row" ${i === items.length-1 ? 'style="border-bottom:none;"' : ''}>
+      <span style="font-size:16px;">${s.icon}</span>
+      <span style="font-size:14px;color:#3A2D35;">${s.label}</span>
+      <span style="margin-left:auto;color:#BFB0B6;font-size:12px;">›</span>
+    </button>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════ MODALS
+
+function renderUploadOptions() {
+  const opts = [
+    { icon:'📷', label:'Take a photo', sub:'AI will clean it up' },
+    { icon:'🔗', label:'Paste a link', sub:'From any brand website' },
+    { icon:'✏️', label:'Describe it', sub:"I'll find the exact item" },
+    { icon:'🤳', label:'Upload a selfie', sub:"I'll detect your items" },
+  ];
+  document.getElementById('upload-options').innerHTML = opts.map(o => `
+    <button onclick="closeUploadModal()" style="width:100%;background:#FDF6F0;border:1px solid #EDD8E0;border-radius:16px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left;">
+      <span style="font-size:22px;">${o.icon}</span>
+      <div>
+        <p style="font-size:13px;font-weight:600;color:#3A2D35;margin:0;">${o.label}</p>
+        <p style="font-size:11px;color:#9A8A90;margin:0;">${o.sub}</p>
+      </div>
+    </button>
+  `).join('');
+}
+
+function openUploadModal() {
+  document.getElementById('upload-modal').classList.add('open');
+}
+function closeUploadModal() {
+  document.getElementById('upload-modal').classList.remove('open');
+}
+function openTryonModal() {
+  document.getElementById('tryon-modal').classList.add('open');
+}
+function closeTryonModal() {
+  document.getElementById('tryon-modal').classList.remove('open');
+}
+</script>
+</body>
+</html>
