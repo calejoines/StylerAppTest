@@ -19,7 +19,7 @@ button:active{opacity:.8}.hidden{display:none!important}.small{font-size:12px;co
 .card{background:white;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 2px 12px rgba(80,50,60,.04)}.tag{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:var(--lav);color:var(--rose-dark);font-size:11px;font-weight:800}.chip{border:1px solid var(--line);background:white;color:var(--ink);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;white-space:nowrap}.chip.active{background:var(--rose);border-color:var(--rose);color:white}.field{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:13px;color:var(--ink)}textarea.field{min-height:78px;resize:vertical}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.scroll-row{overflow-x:auto}.scroll-inner{display:flex;gap:8px;width:max-content;padding-bottom:2px}
 
 /* onboarding */
-#onboarding{min-height:100vh;background:linear-gradient(160deg,#F7E1E8 0%,#FDF6F0 55%,#E8DCF5 100%);display:flex;flex-direction:column;justify-content:center;padding:30px 22px}.brand-title{font-family:'DM Serif Display',serif;text-align:center;color:var(--rose-dark);font-size:44px;margin-bottom:22px;letter-spacing:-1px}.onboard-card{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 10px 40px rgba(180,100,120,.14)}.plan{border:1px solid var(--line);background:#fff;border-radius:18px;padding:15px;margin-bottom:10px;position:relative}.plan.selected{border:2px solid var(--rose);box-shadow:0 4px 18px rgba(180,90,114,.14)}.plan input{position:absolute;opacity:0}.plan-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.price{font-size:18px;font-weight:800;color:var(--rose-dark)}.check{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:white}.plan.selected .check{background:var(--rose);border-color:var(--rose)}
+#onboarding{min-height:100vh;background:linear-gradient(160deg,#F7E1E8 0%,#FDF6F0 55%,#E8DCF5 100%);display:flex;flex-direction:column;justify-content:center;padding:30px 22px}.brand-title{font-family:'DM Serif Display',serif;text-align:center;color:var(--rose-dark);font-size:44px;margin-bottom:22px;letter-spacing:-1px}.onboard-card{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 10px 40px rgba(180,100,120,.14)}.plan{display:block;width:100%;border:1px solid var(--line);background:#fff;border-radius:18px;padding:15px;margin-bottom:10px;position:relative;cursor:pointer}.plan.selected{border:2px solid var(--rose);box-shadow:0 4px 18px rgba(180,90,114,.14)}.plan input{position:absolute;opacity:0}.plan-head{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px}.price{font-size:18px;font-weight:800;color:var(--rose-dark)}.check{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:white}.plan.selected .check{background:var(--rose);border-color:var(--rose)}
 
 /* app */
 #app{display:none;min-height:100vh;padding-bottom:82px}.topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:13px 16px}.home-btn{width:34px;height:34px;border-radius:12px;border:1px solid var(--line);background:white;color:var(--rose-dark);font-weight:800}.topbar-title{font-family:'DM Serif Display',serif;font-size:27px;color:var(--rose-dark)}.top-meta{text-align:right;font-size:11px;color:var(--muted);line-height:1.3}.tab-content{display:none;padding:16px;overflow-y:auto}.tab-content.active{display:block}.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding:7px 0 10px;z-index:20}.nav-btn{flex:1;border:0;background:transparent;display:flex;flex-direction:column;gap:2px;align-items:center;color:var(--muted)}.nav-dot{width:35px;height:33px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}.nav-btn.active{color:var(--rose-dark);font-weight:800}.nav-btn.active .nav-dot{background:linear-gradient(135deg,var(--soft),var(--lav))}.nav-label{font-size:10px}
@@ -42,7 +42,7 @@ button:active{opacity:.8}.hidden{display:none!important}.small{font-size:12px;co
       <p class="small" style="margin-bottom:18px">Explore the product or subscribe to create a real style profile and digital closet.</p>
 
       <label class="plan selected" data-plan="premium" onclick="selectPlan('premium')">
-        <input type="radio" name="plan" checked />
+        <input type="radio" name="plan" value="premium" checked />
         <div class="plan-head">
           <div>
             <div style="font-weight:800">Styler Premium</div>
@@ -54,7 +54,7 @@ button:active{opacity:.8}.hidden{display:none!important}.small{font-size:12px;co
       </label>
 
       <label class="plan" data-plan="demo" onclick="selectPlan('demo')">
-        <input type="radio" name="plan" />
+        <input type="radio" name="plan" value="demo" />
         <div class="plan-head">
           <div>
             <div style="font-weight:800">Free demo</div>
@@ -68,7 +68,7 @@ button:active{opacity:.8}.hidden{display:none!important}.small{font-size:12px;co
       <div class="notice" style="margin:12px 0">
         Payment integration belongs on your backend. Do not collect founder bank details in this frontend. Connect the founder payout account in Stripe Dashboard, then use Stripe Checkout or Billing.
       </div>
-      <button class="primary-btn" style="width:100%" onclick="continueFromPlan()">Continue</button>
+      <button type="button" class="primary-btn" style="width:100%" onclick="continueFromPlan()">Continue</button>
     </div>
 
     <form id="profile-step" class="hidden" onsubmit="finishProfile(event)">
@@ -93,7 +93,7 @@ button:active{opacity:.8}.hidden{display:none!important}.small{font-size:12px;co
       <div style="margin-top:12px"><div class="label">Preferred styles</div><textarea class="field" id="p-styles" placeholder="Minimal, romantic, streetwear, classic, workwear..."></textarea></div>
       <div style="margin-top:12px"><div class="label">Fit, comfort, lifestyle, weather sensitivity, dress codes</div><textarea class="field" id="p-lifestyle" placeholder="Tell Styler about your day-to-day life and preferences."></textarea></div>
       <div style="margin-top:12px"><div class="label">Anything else important?</div><textarea class="field" id="p-extra" placeholder="Add anything you want the AI to consider."></textarea></div>
-      <div style="display:flex;gap:10px;margin-top:16px"><button type="button" class="ghost-btn" onclick="backToPlans()">Back</button><button class="primary-btn" style="flex:1">Enter Styler</button></div>
+      <div style="display:flex;gap:10px;margin-top:16px"><button type="button" class="ghost-btn" onclick="backToPlans()">Back</button><button type="submit" class="primary-btn" style="flex:1">Enter Styler</button></div>
     </form>
   </div>
 </section>
@@ -218,7 +218,12 @@ const closetCategories = ['all','Tops','Bottoms','Dresses','Outerwear','Shoes','
 
 function selectPlan(plan){
   state.selectedPlan = plan;
-  document.querySelectorAll('.plan').forEach(p => p.classList.toggle('selected', p.dataset.plan === plan));
+  document.querySelectorAll('.plan').forEach(p => {
+    const isSelected = p.dataset.plan === plan;
+    p.classList.toggle('selected', isSelected);
+    const radio = p.querySelector('input[type=\"radio\"]');
+    if (radio) radio.checked = isSelected;
+  });
 }
 function continueFromPlan(){
   if(state.selectedPlan === 'demo') launchApp('demo');
