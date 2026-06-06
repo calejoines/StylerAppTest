@@ -4,1137 +4,430 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Styler</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-::-webkit-scrollbar { width: 0; height: 0; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: #FDF6F0;
-  max-width: 430px;
-  margin: 0 auto;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
+:root{
+  --bg:#FDF6F0; --card:#FFFFFF; --rose:#D4748C; --rose-dark:#B85A72;
+  --purple:#9B7FC4; --ink:#3A2D35; --muted:#8C7E86; --line:#EDD8E0;
+  --soft:#F7E1E8; --lav:#E8DCF5; --sage:#D6E8D8;
 }
-button { cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.15s; }
-button:active { opacity: 0.8; }
-input, textarea { font-family: 'DM Sans', sans-serif; outline: none; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);max-width:430px;margin:0 auto;min-height:100vh;color:var(--ink);overflow-x:hidden}
+button,input,textarea,select{font-family:'DM Sans',sans-serif} button{cursor:pointer} input,textarea,select{outline:none}
+button:active{opacity:.8}.hidden{display:none!important}.small{font-size:12px;color:var(--muted);line-height:1.45}.label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}.title{font-family:'DM Serif Display',serif;color:var(--ink)}
+.primary-btn,.secondary-btn,.ghost-btn{border:none;border-radius:14px;padding:13px 16px;font-size:14px;font-weight:700}.primary-btn{background:linear-gradient(135deg,var(--rose),var(--purple));color:white;box-shadow:0 4px 16px rgba(180,90,114,.25)}.secondary-btn{background:var(--soft);color:var(--rose-dark)}.ghost-btn{background:white;border:1px solid var(--line);color:var(--ink)}
+.card{background:white;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 2px 12px rgba(80,50,60,.04)}.tag{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:var(--lav);color:var(--rose-dark);font-size:11px;font-weight:800}.chip{border:1px solid var(--line);background:white;color:var(--ink);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;white-space:nowrap}.chip.active{background:var(--rose);border-color:var(--rose);color:white}.field{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:13px;color:var(--ink)}textarea.field{min-height:78px;resize:vertical}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.scroll-row{overflow-x:auto}.scroll-inner{display:flex;gap:8px;width:max-content;padding-bottom:2px}
 
-/* ── Onboarding ── */
-#onboarding {
-  min-height: 100vh;
-  background: linear-gradient(160deg, #F7E1E8 0%, #FDF6F0 50%, #E8DCF5 100%);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 40px 24px;
-}
-.onboard-card {
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(10px);
-  border-radius: 28px;
-  padding: 28px 24px;
-  width: 100%;
-  box-shadow: 0 8px 40px rgba(180,100,120,0.12);
-  border: 1px solid #EDD8E0;
-}
-.brand-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 42px;
-  color: #B85A72;
-  text-align: center;
-  margin-bottom: 28px;
-  letter-spacing: -1px;
-}
-.onboard-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 22px;
-  color: #3A2D35;
-  margin-bottom: 4px;
-}
-.onboard-sub { font-size: 13px; color: #9A8A90; margin-bottom: 20px; }
-.dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
-.dot { height: 6px; border-radius: 3px; background: #F2C4CE; transition: width 0.3s; }
-.dot.active { background: #D4748C; width: 20px; }
-.dot.inactive { width: 6px; }
+/* onboarding */
+#onboarding{min-height:100vh;background:linear-gradient(160deg,#F7E1E8 0%,#FDF6F0 55%,#E8DCF5 100%);display:flex;flex-direction:column;justify-content:center;padding:30px 22px}.brand-title{font-family:'DM Serif Display',serif;text-align:center;color:var(--rose-dark);font-size:44px;margin-bottom:22px;letter-spacing:-1px}.onboard-card{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 10px 40px rgba(180,100,120,.14)}.plan{border:1px solid var(--line);background:#fff;border-radius:18px;padding:15px;margin-bottom:10px;position:relative}.plan.selected{border:2px solid var(--rose);box-shadow:0 4px 18px rgba(180,90,114,.14)}.plan input{position:absolute;opacity:0}.plan-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.price{font-size:18px;font-weight:800;color:var(--rose-dark)}.check{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:white}.plan.selected .check{background:var(--rose);border-color:var(--rose)}
 
-/* ── Chip / tag ── */
-.chip {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.15s;
-}
-.chip.active { background: #D4748C; color: #fff; }
-.chip.inactive { background: #F7E1E8; color: #B85A72; }
-.chip.purple-inactive { background: #FDF6F0; color: #9B7FC4; }
-.chip.purple-active { background: #E8DCF5; color: #9B7FC4; font-weight: 600; }
+/* app */
+#app{display:none;min-height:100vh;padding-bottom:82px}.topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:13px 16px}.home-btn{width:34px;height:34px;border-radius:12px;border:1px solid var(--line);background:white;color:var(--rose-dark);font-weight:800}.topbar-title{font-family:'DM Serif Display',serif;font-size:27px;color:var(--rose-dark)}.top-meta{text-align:right;font-size:11px;color:var(--muted);line-height:1.3}.tab-content{display:none;padding:16px;overflow-y:auto}.tab-content.active{display:block}.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding:7px 0 10px;z-index:20}.nav-btn{flex:1;border:0;background:transparent;display:flex;flex-direction:column;gap:2px;align-items:center;color:var(--muted)}.nav-dot{width:35px;height:33px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}.nav-btn.active{color:var(--rose-dark);font-weight:800}.nav-btn.active .nav-dot{background:linear-gradient(135deg,var(--soft),var(--lav))}.nav-label{font-size:10px}
 
-/* ── Main layout ── */
-#app { display: none; flex-direction: column; min-height: 100vh; padding-bottom: 80px; }
+/* chat */
+.chat-area{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}.bubble-row{display:flex;gap:8px;align-items:flex-end}.bubble-row.user{justify-content:flex-end}.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--soft),var(--lav));display:flex;align-items:center;justify-content:center;color:var(--rose-dark);font-size:11px;font-weight:800;flex-shrink:0}.bubble{max-width:78%;border-radius:18px;padding:10px 13px;font-size:14px;line-height:1.45;box-shadow:0 1px 6px rgba(0,0,0,.04)}.bubble.ai{background:white;border:1px solid var(--line);border-radius:18px 18px 18px 5px}.bubble.user{background:linear-gradient(135deg,var(--rose-dark),var(--purple));color:white;border-radius:18px 18px 5px 18px}.chat-input-row{position:sticky;bottom:82px;background:var(--bg);display:flex;gap:9px;align-items:flex-end;padding:8px 0}.chat-input-row textarea{flex:1;border:1px solid var(--line);border-radius:18px;padding:11px 13px;background:white;resize:none;font-size:13px}.send-btn{width:41px;height:41px;border-radius:50%;border:0;background:var(--rose);color:white;font-weight:800}
 
-/* ── Top bar ── */
-.topbar {
-  background: #fff;
-  padding: 16px 20px 12px;
-  display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid #EDD8E0;
-  position: sticky; top: 0; z-index: 10;
-}
-.topbar-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 26px; color: #B85A72; letter-spacing: -0.5px;
-}
-.avatar {
-  border-radius: 50%;
-  background: linear-gradient(135deg, #F2C4CE, #E8DCF5);
-  display: flex; align-items: center; justify-content: center;
-  color: #B85A72; font-weight: 600; font-size: 13px;
-  flex-shrink: 0;
-}
-
-/* ── Tab content ── */
-.tab-content { display: none; flex: 1; overflow-y: auto; }
-.tab-content.active { display: block; }
-
-/* ── Chat ── */
-.chat-area { padding: 16px 16px 0; }
-.bubble-row { display: flex; margin-bottom: 8px; gap: 8px; align-items: flex-end; }
-.bubble-row.user { justify-content: flex-end; }
-.bubble-row.ai { justify-content: flex-start; }
-.bubble {
-  max-width: 75%; border-radius: 18px;
-  padding: 10px 14px; font-size: 14px; line-height: 1.5;
-  box-shadow: 0 1px 6px rgba(180,100,120,0.1);
-}
-.bubble.user {
-  background: linear-gradient(135deg, #B85A72, #9B7FC4);
-  color: #fff; border-radius: 18px 18px 4px 18px;
-}
-.bubble.ai {
-  background: #fff; color: #3A2D35;
-  border: 1px solid #EDD8E0;
-  border-radius: 18px 18px 18px 4px;
-}
-.chat-input-row {
-  padding: 10px 14px;
-  background: #fff;
-  border-top: 1px solid #EDD8E0;
-  display: flex; gap: 10px; align-items: flex-end;
-}
-.chat-input-row textarea {
-  flex: 1; border: 1px solid #EDD8E0;
-  border-radius: 18px; padding: 10px 14px;
-  font-size: 13px; resize: none;
-  background: #F7E1E8; color: #3A2D35;
-}
-.send-btn {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, #D4748C, #9B7FC4);
-  border: none; color: #fff; font-size: 16px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-
-/* ── Outfit cards ── */
-.outfits-scroll { overflow-x: auto; padding: 0 16px 16px; }
-.outfits-row { display: flex; gap: 12px; width: max-content; }
-.outfit-card {
-  background: #fff; border-radius: 20px;
-  border: 1px solid #EDD8E0; padding: 14px;
-  min-width: 160px; flex-shrink: 0; cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-}
-.outfit-card.selected {
-  border: 2px solid #D4748C;
-  box-shadow: 0 4px 16px rgba(180,100,120,0.18);
-}
-.outfit-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 4px; margin-bottom: 10px;
-  border-radius: 12px; overflow: hidden;
-}
-.outfit-cell {
-  height: 64px; display: flex;
-  align-items: center; justify-content: center; font-size: 26px;
-}
-
-/* ── Shop card ── */
-.shop-card {
-  background: #fff; border-radius: 20px;
-  border: 1px solid #EDD8E0; overflow: hidden;
-  box-shadow: 0 2px 12px rgba(180,100,120,0.07);
-}
-.shop-card img {
-  width: 100%; height: 180px;
-  object-fit: cover; display: block;
-}
-.shop-card-body { padding: 12px 14px 14px; }
-.match-badge {
-  position: absolute; top: 8px; right: 8px;
-  background: #B85A72; color: #fff;
-  font-size: 10px; font-weight: 700;
-  padding: 3px 8px; border-radius: 10px;
-}
-.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-/* ── Closet ── */
-.closet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.closet-item {
-  background: #fff; border-radius: 16px;
-  border: 1px solid #EDD8E0; padding: 12px 8px;
-  cursor: pointer; transition: all 0.15s;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 4px; position: relative;
-}
-.closet-item.selected { border: 2px solid #D4748C; }
-.closet-emoji-box {
-  width: 48px; height: 48px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center; font-size: 24px;
-}
-
-/* ── Stats row ── */
-.stats-row { display: flex; gap: 8px; margin-bottom: 16px; }
-.stat-box {
-  flex: 1; background: #fff; border-radius: 14px;
-  border: 1px solid #EDD8E0; padding: 10px 8px; text-align: center;
-}
-
-/* ── Inspo masonry ── */
-.inspo-grid { columns: 2; column-gap: 10px; }
-.inspo-item {
-  break-inside: avoid; margin-bottom: 10px;
-  border-radius: 16px; overflow: hidden;
-  border: 1px solid #EDD8E0; position: relative;
-}
-.inspo-item img { width: 100%; display: block; object-fit: cover; }
-.inspo-overlay {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: linear-gradient(transparent, rgba(58,45,53,0.6));
-  padding: 20px 10px 8px;
-}
-
-/* ── Bottom nav ── */
-.bottom-nav {
-  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 430px;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(16px);
-  border-top: 1px solid #EDD8E0;
-  display: flex; padding: 6px 0 10px;
-  z-index: 20;
-}
-.nav-btn {
-  flex: 1; background: transparent; border: none;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 2px; padding: 4px 0;
-}
-.nav-icon {
-  width: 36px; height: 36px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; transition: all 0.2s;
-}
-.nav-icon.active { background: linear-gradient(135deg, #F2C4CE, #E8DCF5); }
-.nav-label { font-size: 10px; transition: color 0.2s; }
-.nav-label.active { color: #B85A72; font-weight: 600; }
-.nav-label.inactive { color: #9A8A90; }
-
-/* ── Modal ── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(58,45,53,0.5);
-  z-index: 100; display: none;
-  align-items: flex-end;
-}
-.modal-overlay.open { display: flex; }
-.modal-sheet {
-  background: #fff; border-radius: 24px 24px 0 0;
-  padding: 24px 20px 36px; width: 100%;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
-}
-.modal-handle {
-  width: 40px; height: 4px;
-  background: #EDD8E0; border-radius: 2px;
-  margin: 0 auto 20px;
-}
-.modal-center-overlay {
-  position: fixed; inset: 0;
-  background: rgba(58,45,53,0.6);
-  z-index: 100; display: none;
-  align-items: center; justify-content: center; padding: 20px;
-}
-.modal-center-overlay.open { display: flex; }
-.modal-center-box {
-  background: #fff; border-radius: 24px;
-  padding: 24px; width: 100%; max-width: 360px;
-}
-
-/* ── Misc ── */
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.section-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: #3A2D35; }
-.white-card { background: #fff; border-radius: 20px; border: 1px solid #EDD8E0; padding: 16px; }
-.pill-btn {
-  display: inline-block; padding: 6px 14px;
-  border-radius: 20px; border: 1px solid #EDD8E0;
-  background: #fff; font-size: 12px;
-  color: #3A2D35; cursor: pointer; white-space: nowrap;
-}
-.pill-btn.active { background: #D4748C; color: #fff; border-color: #D4748C; font-weight: 600; }
-.tag {
-  display: inline-block;
-  background: #E8DCF5; color: #B85A72;
-  font-size: 11px; font-weight: 600;
-  padding: 3px 9px; border-radius: 20px;
-  letter-spacing: 0.3px; white-space: nowrap;
-}
-.tag.sage { background: #D6E8D8; }
-.tag.rose { background: rgba(255,255,255,0.7); }
-.color-dot {
-  display: inline-block; border-radius: 50%;
-  border: 1.5px solid rgba(0,0,0,0.08); flex-shrink: 0;
-}
-.primary-btn {
-  width: 100%; border: none; border-radius: 14px; padding: 14px;
-  font-size: 14px; font-weight: 600; cursor: pointer;
-  background: linear-gradient(135deg, #D4748C, #9B7FC4);
-  color: #fff; box-shadow: 0 4px 16px rgba(180,100,120,0.3);
-}
-.secondary-btn {
-  background: #F7E1E8; color: #B85A72;
-  border: none; border-radius: 14px; padding: 12px 20px;
-  font-size: 14px; cursor: pointer;
-}
-.scroll-row { overflow-x: auto; }
-.scroll-inner { display: flex; gap: 8px; width: max-content; padding-bottom: 2px; }
-
-/* profile */
-.profile-header {
-  background: linear-gradient(135deg, #F7E1E8, #E8DCF5);
-  border-radius: 24px; padding: 24px 20px; margin-bottom: 16px;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-}
-.settings-list { background: #fff; border-radius: 20px; border: 1px solid #EDD8E0; overflow: hidden; }
-.settings-row {
-  width: 100%; background: transparent; border: none;
-  padding: 14px 16px; border-bottom: 1px solid #EDD8E0;
-  display: flex; align-items: center; gap: 12px; cursor: pointer; text-align: left;
-}
-.settings-row:last-child { border-bottom: none; }
+/* grids/cards */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.section-title{font-family:'DM Serif Display',serif;font-size:23px;color:var(--ink)}.closet-grid,.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.closet-item,.shop-card,.outfit-card{background:white;border:1px solid var(--line);border-radius:18px;overflow:hidden}.closet-item{padding:12px}.closet-swatch{height:74px;border-radius:14px;margin-bottom:9px;border:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(58,45,53,.7)}.outfits-scroll{overflow-x:auto;margin:0 -16px 14px;padding:0 16px}.outfits-row{display:flex;gap:11px;width:max-content}.outfit-card{min-width:178px;padding:13px;cursor:pointer}.outfit-card.selected{border:2px solid var(--rose)}.outfit-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:9px}.outfit-cell{height:58px;border-radius:11px;border:1px solid rgba(0,0,0,.04);display:flex;align-items:center;justify-content:center;font-size:10px;text-align:center;padding:4px}.shop-card img{width:100%;height:150px;object-fit:cover;background:var(--soft)}.shop-body{padding:12px}.match-badge{position:absolute;top:8px;right:8px;background:var(--rose-dark);color:white;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800}.empty{border:1px dashed var(--line);background:rgba(255,255,255,.6);border-radius:20px;padding:22px;text-align:center}.map-link,.product-link{display:block;text-align:center;text-decoration:none;border-radius:10px;padding:8px;font-size:12px;font-weight:800;margin-top:6px}.product-link{background:var(--rose);color:white}.map-link{background:white;border:1px solid var(--line);color:var(--purple)}
+.inspo-grid{columns:2;column-gap:10px}.inspo-item{break-inside:avoid;border:1px solid var(--line);border-radius:16px;background:white;margin-bottom:10px;overflow:hidden}.inspo-item img{width:100%;display:block}.modal{position:fixed;inset:0;background:rgba(58,45,53,.55);display:none;align-items:flex-end;z-index:100}.modal.open{display:flex}.sheet{width:100%;background:white;border-radius:24px 24px 0 0;padding:22px 18px 30px}.handle{width:42px;height:4px;border-radius:4px;background:var(--line);margin:0 auto 18px}.notice{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px;font-size:12px;color:var(--muted);line-height:1.5}.danger{background:#FFF5F4;border-color:#F2D1CC;color:#8A514A}.success{background:#F4FBF5;border-color:#D6E8D8;color:#4B7452}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════ ONBOARDING -->
-<div id="onboarding">
-  <div class="brand-title">Styler</div>
-  <div class="onboard-card">
-    <div id="step-0">
-      <h2 class="onboard-title">Welcome to Styler</h2>
-      <p class="onboard-sub">Your personal AI styling companion</p>
-      <div style="text-align:center; padding: 16px 0;">
-        <div style="font-size:64px; margin-bottom:12px;">✨</div>
-        <p style="color:#9A8A90; line-height:1.6; font-size:14px;">
-          Build your digital closet, get AI-powered outfit suggestions and discover pieces curated just for you.
-        </p>
-      </div>
-    </div>
+<section id="onboarding">
+  <div class="brand-title">Styler</div>
+  <div class="onboard-card">
+    <div id="choose-plan-step">
+      <h1 class="title" style="font-size:25px;margin-bottom:5px">Choose how to start</h1>
+      <p class="small" style="margin-bottom:18px">Explore the product or subscribe to create a real style profile and digital closet.</p>
 
-    <div id="step-1" style="display:none;">
-      <h2 class="onboard-title">Tell us about you</h2>
-      <p class="onboard-sub">So we can style you perfectly</p>
-      <div style="display:flex; flex-direction:column; gap:14px;">
-        <div>
-          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Body shape</p>
-          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="body-chips">
-            <button class="chip active" onclick="selectChip(this,'body-chips')">Hourglass</button>
-            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Pear</button>
-            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Apple</button>
-            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Rectangle</button>
-            <button class="chip inactive" onclick="selectChip(this,'body-chips')">Inverted triangle</button>
-          </div>
-        </div>
-        <div>
-          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Skin tone</p>
-          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="tone-chips">
-            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Fair</button>
-            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Light</button>
-            <button class="chip active" onclick="selectChip(this,'tone-chips')">Medium warm</button>
-            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Olive</button>
-            <button class="chip inactive" onclick="selectChip(this,'tone-chips')">Deep warm</button>
-          </div>
-        </div>
-        <div>
-          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Your vibe</p>
-          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="vibe-chips">
-            <button class="chip purple-active" onclick="selectVibeChip(this)">Soft & feminine</button>
-            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Clean girl</button>
-            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Y2K</button>
-            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Minimalist</button>
-            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Streetwear</button>
-            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Romantic</button>
-            <button class="chip purple-inactive" onclick="selectVibeChip(this)">Dark academia</button>
-          </div>
-        </div>
-        <div>
-          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:6px;">Hair colour</p>
-          <div style="display:flex; gap:6px; flex-wrap:wrap;" id="hair-chips">
-            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Blonde</button>
-            <button class="chip active" onclick="selectChip(this,'hair-chips')">Brunette</button>
-            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Black</button>
-            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Red</button>
-            <button class="chip inactive" onclick="selectChip(this,'hair-chips')">Other</button>
-          </div>
-        </div>
-      </div>
-    </div>
+      <label class="plan selected" data-plan="premium" onclick="selectPlan('premium')">
+        <input type="radio" name="plan" checked />
+        <div class="plan-head">
+          <div>
+            <div style="font-weight:800">Styler Premium</div>
+            <div class="small">Full account, AI outfits, closet, weather and product suggestions.</div>
+          </div>
+          <div class="price">8€/mo</div>
+          <div class="check">✓</div>
+        </div>
+      </label>
 
-    <div id="step-2" style="display:none;">
-      <h2 class="onboard-title">Choose your plan</h2>
-      <p class="onboard-sub">Start free for 7 days</p>
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <div style="background:#fff; border-radius:16px; border:2px solid #D4748C; padding:14px 16px; position:relative;">
-          <div style="position:absolute; top:-10px; right:14px; background:#D4748C; color:#fff; font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px;">MOST POPULAR</div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <p style="font-weight:700; font-size:15px; color:#3A2D35;">Styler Premium</p>
-              <p style="font-size:12px; color:#9A8A90; margin-top:2px;">8€ / month — 7 days free</p>
-            </div>
-            <span style="font-size:22px;">💎</span>
-          </div>
-          <ul style="margin-top:10px; padding-left:16px; font-size:12px; color:#9A8A90; line-height:1.9;">
-            <li>Unlimited AI outfit suggestions</li>
-            <li>Digital closet (unlimited items)</li>
-            <li>Virtual try-on</li>
-            <li>Weekly outfit planning</li>
-          </ul>
-        </div>
-        <div style="background:#FDF6F0; border-radius:16px; border:1px solid #EDD8E0; padding:14px 16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <p style="font-weight:600; font-size:14px; color:#3A2D35;">Just explore</p>
-              <p style="font-size:12px; color:#9A8A90; margin-top:2px;">Free demo — limited features</p>
-            </div>
-            <span style="font-size:22px;">👀</span>
-          </div>
-        </div>
-        <div style="background:#fff; border-radius:16px; border:1px solid #EDD8E0; padding:14px 16px; margin-top:4px;">
-          <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:8px;">🔒 Developer panel — payment destination</p>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <input placeholder="Bank / Stripe account name" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
-            <input placeholder="IBAN or account number" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
-            <button style="background:#D4748C; color:#fff; border:none; border-radius:10px; padding:9px; font-size:12px; font-weight:600;">Save payment details</button>
-          </div>
-        </div>
-      </div>
-    </div>
+      <label class="plan" data-plan="demo" onclick="selectPlan('demo')">
+        <input type="radio" name="plan" />
+        <div class="plan-head">
+          <div>
+            <div style="font-weight:800">Free demo</div>
+            <div class="small">Just explore the features. This does not log you into a real account.</div>
+          </div>
+          <div class="price">0€</div>
+          <div class="check">✓</div>
+        </div>
+      </label>
 
-    <div style="margin-top:24px; display:flex; gap:10px; align-items:center;">
-      <button class="secondary-btn" id="back-btn" style="display:none;" onclick="prevStep()">Back</button>
-      <button class="primary-btn" onclick="nextStep()" id="next-btn">Continue</button>
-    </div>
-    <div class="dots" id="dots">
-      <div class="dot active" id="dot-0"></div>
-      <div class="dot inactive" id="dot-1"></div>
-      <div class="dot inactive" id="dot-2"></div>
-    </div>
-  </div>
+      <div class="notice" style="margin:12px 0">
+        Payment integration belongs on your backend. Do not collect founder bank details in this frontend. Connect the founder payout account in Stripe Dashboard, then use Stripe Checkout or Billing.
+      </div>
+      <button class="primary-btn" style="width:100%" onclick="continueFromPlan()">Continue</button>
+    </div>
+
+    <form id="profile-step" class="hidden" onsubmit="finishProfile(event)">
+      <h1 class="title" style="font-size:25px;margin-bottom:5px">Create your style profile</h1>
+      <p class="small" style="margin-bottom:16px">These questions only appear after subscription/sign-in. Users can type freely where needed.</p>
+      <div class="field-row">
+        <div><div class="label">Name</div><input class="field" id="p-name" placeholder="Your name" value="Sofia" /></div>
+        <div><div class="label">Age</div><input class="field" id="p-age" type="number" min="13" placeholder="Age" /></div>
+        <div><div class="label">Height</div><input class="field" id="p-height" placeholder="e.g. 165 cm" /></div>
+        <div><div class="label">Clothing size</div><input class="field" id="p-size" placeholder="e.g. S / EU 36" /></div>
+        <div><div class="label">Body shape</div><select class="field" id="p-body"><option>Hourglass</option><option>Pear</option><option>Apple</option><option>Rectangle</option><option>Inverted triangle</option><option>Unsure</option></select></div>
+        <div><div class="label">Undertone</div><select class="field" id="p-undertone"><option>Warm</option><option>Cool</option><option>Neutral</option><option>Olive</option><option>Unsure</option></select></div>
+        <div><div class="label">Skin tone</div><input class="field" id="p-skin" placeholder="e.g. light olive" /></div>
+        <div><div class="label">Eye color</div><input class="field" id="p-eyes" placeholder="e.g. hazel" /></div>
+        <div><div class="label">Hair color</div><input class="field" id="p-hair" placeholder="e.g. brunette" /></div>
+        <div><div class="label">Hair pattern</div><input class="field" id="p-hair-pattern" placeholder="straight, wavy, curly..." /></div>
+        <div><div class="label">Favorite colors</div><input class="field" id="p-fav-colors" placeholder="cream, navy, red..." /></div>
+        <div><div class="label">Colors to avoid</div><input class="field" id="p-avoid-colors" placeholder="neon, orange..." /></div>
+        <div><div class="label">Budget range</div><input class="field" id="p-budget" placeholder="e.g. 20–80€" /></div>
+        <div><div class="label">Favorite brands</div><input class="field" id="p-brands" placeholder="Zara, Mango..." /></div>
+      </div>
+      <div style="margin-top:12px"><div class="label">Preferred styles</div><textarea class="field" id="p-styles" placeholder="Minimal, romantic, streetwear, classic, workwear..."></textarea></div>
+      <div style="margin-top:12px"><div class="label">Fit, comfort, lifestyle, weather sensitivity, dress codes</div><textarea class="field" id="p-lifestyle" placeholder="Tell Styler about your day-to-day life and preferences."></textarea></div>
+      <div style="margin-top:12px"><div class="label">Anything else important?</div><textarea class="field" id="p-extra" placeholder="Add anything you want the AI to consider."></textarea></div>
+      <div style="display:flex;gap:10px;margin-top:16px"><button type="button" class="ghost-btn" onclick="backToPlans()">Back</button><button class="primary-btn" style="flex:1">Enter Styler</button></div>
+    </form>
+  </div>
+</section>
+
+<main id="app">
+  <header class="topbar">
+    <button class="home-btn" onclick="goHome()" title="Home">⌂</button>
+    <div class="topbar-title">Styler</div>
+    <div class="top-meta" id="top-meta">Location not set<br/>Weather not loaded</div>
+  </header>
+
+  <section class="tab-content active" id="tab-outfit">
+    <div id="mode-banner" class="notice" style="margin-bottom:12px"></div>
+    <div id="chat" class="chat-area"></div>
+    <div class="scroll-row" style="margin-bottom:8px"><div class="scroll-inner" id="quick-prompts"></div></div>
+    <div class="chat-input-row">
+      <textarea id="chat-input" rows="1" placeholder="Ask for an outfit or request adjustments..."></textarea>
+      <button class="send-btn" onclick="sendMessage()">Go</button>
+    </div>
+    <div id="outfit-results" class="hidden">
+      <div class="section-header"><h2 class="section-title">Outfit suggestions</h2><span class="small">Swipe sideways</span></div>
+      <div class="outfits-scroll"><div class="outfits-row" id="outfits-row"></div></div>
+      <div class="card" id="outfit-detail" style="margin-bottom:14px"></div>
+      <div class="section-header"><h2 class="section-title">Explore more options</h2><button class="chip" onclick="loadVerifiedProducts()">Refresh</button></div>
+      <div id="explore-note" class="notice" style="margin-bottom:10px"></div>
+      <div class="shop-grid" id="explore-grid"></div>
+    </div>
+  </section>
+
+  <section class="tab-content" id="tab-closet">
+    <div class="section-header"><h2 class="section-title">Digital closet</h2><button class="chip active" onclick="openAddItem()">Add item</button></div>
+    <div id="closet-status" class="notice" style="margin-bottom:12px"></div>
+    <div class="scroll-row" style="margin-bottom:12px"><div class="scroll-inner" id="closet-filters"></div></div>
+    <div class="closet-grid" id="closet-grid"></div>
+  </section>
+
+  <section class="tab-content" id="tab-inspo">
+    <div class="section-header"><h2 class="section-title">Inspo</h2><button class="chip active" onclick="openInspoModal()">Add</button></div>
+    <p class="small" style="margin-bottom:12px">Upload images, screenshots, or Pinterest board exports. The previous “Find items” action has been removed from this section.</p>
+    <div class="card" style="margin-bottom:12px">
+      <div class="label">Pinterest board</div>
+      <input class="field" placeholder="Paste Pinterest board URL" />
+      <button class="secondary-btn" style="width:100%;margin-top:9px" onclick="alert('Connect this to your Pinterest/API import flow or allow users to upload exported images.')">Import board</button>
+    </div>
+    <div class="inspo-grid" id="inspo-grid"></div>
+  </section>
+
+  <section class="tab-content" id="tab-browse">
+    <div class="section-header"><h2 class="section-title">Browse</h2><button class="chip" onclick="requestLocation()">Use location</button></div>
+    <input class="field" id="browse-search" placeholder="Search real products from connected brand APIs..." oninput="renderBrowse()" style="margin-bottom:10px" />
+    <div class="scroll-row" style="margin-bottom:10px"><div class="scroll-inner" id="brand-filters"></div></div>
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span class="label" style="margin:0">Max price</span><span id="price-label" style="font-size:12px;font-weight:800;color:var(--rose-dark)">100€</span></div>
+      <input id="price-range" type="range" min="0" max="300" value="100" step="5" style="width:100%;accent-color:var(--rose)" oninput="setMaxPrice(this.value)" />
+    </div>
+    <div id="browse-note" class="notice" style="margin-bottom:10px"></div>
+    <div class="shop-grid" id="browse-grid"></div>
+  </section>
+
+  <section class="tab-content" id="tab-account">
+    <div class="card" style="text-align:center;margin-bottom:12px">
+      <div class="avatar" style="width:60px;height:60px;margin:0 auto 10px;font-size:20px" id="account-avatar">S</div>
+      <h2 class="title" id="account-name">Demo user</h2>
+      <span class="tag" id="account-plan">Free demo</span>
+    </div>
+    <div class="card" style="margin-bottom:12px"><h3 style="font-size:15px;margin-bottom:10px">Style profile</h3><div id="profile-summary"></div></div>
+    <div class="card" style="margin-bottom:12px"><h3 style="font-size:15px;margin-bottom:8px">Subscription</h3><div id="subscription-box"></div></div>
+    <div class="notice">
+      Founder payout setup: connect your bank account in Stripe Dashboard. In code, configure STRIPE_PUBLISHABLE_KEY, STRIPE_PRICE_ID, and CHECKOUT_ENDPOINT. Never collect raw bank details in browser code.
+    </div>
+  </section>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</main>
+
+<div class="modal" id="add-item-modal" onclick="closeModal('add-item-modal')">
+  <div class="sheet" onclick="event.stopPropagation()"><div class="handle"></div><h2 class="title" style="font-size:22px;margin-bottom:12px">Add closet item</h2><div id="add-item-options"></div></div>
 </div>
-
-<!-- ══════════════════════════════════════════════════════ MAIN APP -->
-<div id="app">
-
-  <!-- Top bar -->
-  <div class="topbar">
-    <span class="topbar-title">Styler</span>
-    <div style="display:flex; gap:10px; align-items:center;">
-      <span id="topbar-meta" style="font-size:12px; color:#9A8A90;">📍 Lisboa · 24°C ☀️</span>
-      <div class="avatar" style="width:32px; height:32px; font-size:13px;">S</div>
-    </div>
-  </div>
-
-  <!-- ── OUTFIT TAB ──────────────────────────────────────────────────── -->
-  <div class="tab-content active" id="tab-outfit">
-    <div class="chat-area" id="chat-messages"></div>
-
-    <!-- Quick chips -->
-    <div class="scroll-row" style="padding:8px 16px;" id="quick-chips">
-      <div class="scroll-inner">
-        <button class="pill-btn" onclick="setInput('Today\'s outfit')">Today's outfit</button>
-        <button class="pill-btn" onclick="setInput('Tomorrow')">Tomorrow</button>
-        <button class="pill-btn" onclick="setInput('This week')">This week</button>
-        <button class="pill-btn" onclick="setInput('Brunch plans')">Brunch plans</button>
-        <button class="pill-btn" onclick="setInput('Girls night out')">Girls night out</button>
-      </div>
-    </div>
-
-    <div class="chat-input-row">
-      <textarea id="chat-input" rows="1" placeholder="Describe your event or ask for an outfit..."></textarea>
-      <button class="send-btn" onclick="sendMessage()">↑</button>
-    </div>
-
-    <!-- Outfit results (hidden until generated) -->
-    <div id="outfit-results" style="display:none; background:#FDF6F0;">
-      <div style="padding:16px 16px 10px; display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="font-size:15px; font-weight:600; color:#3A2D35;">Your outfits</h3>
-        <span style="font-size:12px; color:#9A8A90;">Swipe →</span>
-      </div>
-      <div class="outfits-scroll">
-        <div class="outfits-row" id="outfits-row"></div>
-      </div>
-
-      <!-- Selected outfit detail -->
-      <div style="padding:0 16px 16px;">
-        <div class="white-card" id="outfit-detail"></div>
-      </div>
-
-      <!-- Picked for you -->
-      <div style="padding:0 16px;">
-        <h3 style="font-size:15px; font-weight:600; color:#3A2D35; margin-bottom:12px;">Picked for you</h3>
-        <div class="shop-grid" id="outfit-shop-grid" style="margin-bottom:20px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── CLOSET TAB ──────────────────────────────────────────────────── -->
-  <div class="tab-content" id="tab-closet" style="padding:16px 16px 0; overflow-y:auto;">
-    <div class="section-header">
-      <span class="section-title">Your Closet</span>
-      <button onclick="openUploadModal()" style="background:#D4748C; color:#fff; border:none; border-radius:20px; padding:8px 16px; font-size:13px; font-weight:600;">+ Add item</button>
-    </div>
-
-    <div class="scroll-row" style="margin-bottom:14px;">
-      <div class="scroll-inner" id="closet-filters">
-        <button class="pill-btn active" onclick="filterCloset('all',this)">All</button>
-        <button class="pill-btn" onclick="filterCloset('Tops',this)">Tops</button>
-        <button class="pill-btn" onclick="filterCloset('Bottoms',this)">Bottoms</button>
-        <button class="pill-btn" onclick="filterCloset('Dresses',this)">Dresses</button>
-        <button class="pill-btn" onclick="filterCloset('Outerwear',this)">Outerwear</button>
-        <button class="pill-btn" onclick="filterCloset('Shoes',this)">Shoes</button>
-        <button class="pill-btn" onclick="filterCloset('Accessories',this)">Accessories</button>
-        <button class="pill-btn" onclick="filterCloset('Favs',this)">♥ Favs</button>
-      </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-box"><p style="font-size:20px; font-weight:700; color:#B85A72;">10</p><p style="font-size:10px; color:#9A8A90;">Items</p></div>
-      <div class="stat-box"><p style="font-size:20px; font-weight:700; color:#B85A72;">5</p><p style="font-size:10px; color:#9A8A90;">Favourites</p></div>
-      <div class="stat-box"><p style="font-size:20px; font-weight:700; color:#B85A72;">4</p><p style="font-size:10px; color:#9A8A90;">Outfits</p></div>
-    </div>
-
-    <div class="closet-grid" id="closet-grid" style="margin-bottom:16px;"></div>
-
-    <div id="tryon-bar" style="display:none; position:sticky; bottom:88px; background:rgba(253,246,240,0.95); padding:12px 0;">
-      <button class="primary-btn" onclick="openTryonModal()" id="tryon-btn">Try on selected items ✨</button>
-    </div>
-  </div>
-
-  <!-- ── INSPO TAB ──────────────────────────────────────────────────── -->
-  <div class="tab-content" id="tab-inspo" style="padding:16px 16px 0; overflow-y:auto;">
-    <div class="section-header">
-      <span class="section-title">Inspo Board</span>
-      <button style="background:#D4748C; color:#fff; border:none; border-radius:20px; padding:8px 16px; font-size:13px; font-weight:600;">+ Add</button>
-    </div>
-    <p style="font-size:13px; color:#9A8A90; margin-bottom:14px; line-height:1.6;">
-      Upload Pinterest boards, screenshots, or photos. I'll learn your style from them.
-    </p>
-    <div class="inspo-grid" id="inspo-grid" style="margin-bottom:16px;"></div>
-    <div style="background:#fff; border-radius:20px; border:1px dashed #EDD8E0; padding:24px; text-align:center; margin-bottom:16px;">
-      <div style="font-size:32px; margin-bottom:8px;">📌</div>
-      <p style="font-size:14px; font-weight:600; color:#3A2D35; margin-bottom:4px;">Add from Pinterest</p>
-      <p style="font-size:12px; color:#9A8A90; margin-bottom:12px;">Paste a board link or upload screenshots</p>
-      <button style="background:#D4748C; color:#fff; border:none; border-radius:14px; padding:10px 24px; font-size:13px; font-weight:600;">Connect Pinterest</button>
-    </div>
-  </div>
-
-  <!-- ── BROWSE TAB ──────────────────────────────────────────────────── -->
-  <div class="tab-content" id="tab-browse" style="padding:16px 16px 0; overflow-y:auto;">
-    <h2 class="section-title" style="margin-bottom:14px;">Browse</h2>
-
-    <div style="background:#fff; border:1px solid #EDD8E0; border-radius:20px; padding:10px 16px; display:flex; gap:10px; align-items:center; margin-bottom:12px;">
-      <span style="font-size:16px; color:#9A8A90;">🔍</span>
-      <input placeholder="Search items, brands, styles..." style="border:none; background:transparent; font-size:13px; flex:1; color:#3A2D35;" />
-    </div>
-
-    <div class="scroll-row" style="margin-bottom:12px;">
-      <div class="scroll-inner" id="brand-filters">
-        <button class="pill-btn active" onclick="filterBrand('all',this)">All</button>
-        <button class="pill-btn" onclick="filterBrand('Zara',this)">Zara</button>
-        <button class="pill-btn" onclick="filterBrand('H&M',this)">H&M</button>
-        <button class="pill-btn" onclick="filterBrand('Mango',this)">Mango</button>
-        <button class="pill-btn" onclick="filterBrand('Bershka',this)">Bershka</button>
-        <button class="pill-btn" onclick="filterBrand('Pull&Bear',this)">Pull&Bear</button>
-      </div>
-    </div>
-
-    <div style="background:#fff; border-radius:16px; border:1px solid #EDD8E0; padding:12px 14px; margin-bottom:14px;">
-      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-        <span style="font-size:12px; font-weight:600; color:#3A2D35;">Price range</span>
-        <span style="font-size:12px; color:#D4748C; font-weight:600;" id="price-label">0€ – 100€</span>
-      </div>
-      <input type="range" min="0" max="200" step="5" value="100" style="width:100%; accent-color:#D4748C;" oninput="updatePrice(this.value)" />
-      <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
-        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(20)">Under 20€</button>
-        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(50)">20–50€</button>
-        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(100)">50–100€</button>
-        <button class="chip inactive" style="font-size:11px;" onclick="setPrice(200)">100€+</button>
-      </div>
-    </div>
-
-    <div class="scroll-row" style="margin-bottom:14px;">
-      <div class="scroll-inner">
-        <button class="pill-btn">New in</button>
-        <button class="pill-btn">Tops</button>
-        <button class="pill-btn">Dresses</button>
-        <button class="pill-btn">Bottoms</button>
-        <button class="pill-btn">Shoes</button>
-        <button class="pill-btn">Accessories</button>
-      </div>
-    </div>
-
-    <div class="shop-grid" id="browse-grid" style="margin-bottom:20px;"></div>
-  </div>
-
-  <!-- ── ACCOUNT TAB ──────────────────────────────────────────────────── -->
-  <div class="tab-content" id="tab-account" style="padding:16px 16px 0; overflow-y:auto;">
-    <div class="profile-header">
-      <div class="avatar" style="width:60px; height:60px; font-size:22px;">S</div>
-      <div style="text-align:center;">
-        <h2 style="font-family:'DM Serif Display', serif; font-size:22px; color:#B85A72;">Sofia</h2>
-        <span class="tag rose">Premium · Trial active</span>
-      </div>
-    </div>
-
-    <div class="white-card" style="margin-bottom:12px;">
-      <h3 style="font-size:15px; font-weight:600; color:#3A2D35; margin-bottom:14px;">Style profile</h3>
-      <div id="profile-rows"></div>
-      <div style="padding-top:10px;">
-        <p style="font-size:12px; color:#9A8A90; margin-bottom:6px;">Preferred colours</p>
-        <div style="display:flex; gap:6px; align-items:center;" id="color-dots"></div>
-      </div>
-    </div>
-
-    <div style="background:linear-gradient(135deg,rgba(212,116,140,0.13),rgba(155,127,196,0.13)); border-radius:20px; border:1px solid #EDD8E0; padding:16px; margin-bottom:12px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h3 style="font-size:15px; font-weight:600; color:#3A2D35;">Subscription</h3>
-        <span class="tag" style="background:#F2C4CE;">Active</span>
-      </div>
-      <p style="font-size:13px; color:#9A8A90;">Styler Premium · 8€/month</p>
-      <p style="font-size:12px; color:#9A8A90; margin-bottom:12px;">Free trial ends in 6 days</p>
-      <div style="background:#fff; border-radius:12px; padding:10px 14px; border:1px solid #EDD8E0; margin-bottom:10px;">
-        <p style="font-size:12px; font-weight:600; color:#9A8A90; margin-bottom:4px;">Payment method</p>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:13px; color:#3A2D35;">•••• •••• •••• 4829</span>
-          <span class="tag">Edit</span>
-        </div>
-      </div>
-      <p style="font-size:11px; color:#9A8A90;">You won't be charged until the trial ends. Cancel anytime.</p>
-    </div>
-
-    <div class="white-card" style="margin-bottom:12px;">
-      <h3 style="font-size:14px; font-weight:600; color:#3A2D35; margin-bottom:4px;">🔒 Developer panel</h3>
-      <p style="font-size:12px; color:#9A8A90; margin-bottom:12px;">Subscription revenue destination</p>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <input placeholder="Bank / Stripe account name" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
-        <input placeholder="IBAN or account number" style="background:#FDF6F0; border:1px solid #EDD8E0; border-radius:10px; padding:10px 12px; font-size:12px;" />
-        <button style="background:#D4748C; color:#fff; border:none; border-radius:12px; padding:10px; font-size:13px; font-weight:600;">Save payment details</button>
-      </div>
-    </div>
-
-    <div class="settings-list" style="margin-bottom:20px;" id="settings-list"></div>
-  </div>
-
-  <!-- Bottom nav -->
-  <nav class="bottom-nav" id="bottom-nav"></nav>
-</div>
-
-<!-- ── UPLOAD MODAL -->
-<div class="modal-overlay" id="upload-modal" onclick="closeUploadModal()">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <h3 style="font-family:'DM Serif Display',serif; font-size:20px; color:#3A2D35; margin-bottom:16px;">Add to closet</h3>
-    <div id="upload-options"></div>
-  </div>
-</div>
-
-<!-- ── TRY-ON MODAL -->
-<div class="modal-center-overlay" id="tryon-modal" onclick="closeTryonModal()">
-  <div class="modal-center-box" onclick="event.stopPropagation()">
-    <h3 style="font-family:'DM Serif Display',serif; font-size:20px; color:#3A2D35; margin-bottom:4px;">Virtual Try-On ✨</h3>
-    <p style="font-size:13px; color:#9A8A90; margin-bottom:16px;">Allow camera access to see the AI fabric mapping on you.</p>
-    <div style="height:220px; background:#F7E1E8; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; margin-bottom:16px;">
-      <div style="font-size:48px;">📸</div>
-      <p style="font-size:13px; color:#9A8A90;">Camera preview</p>
-      <button style="background:#D4748C; color:#fff; border:none; border-radius:20px; padding:8px 20px; font-size:13px;">Allow camera</button>
-    </div>
-    <div style="display:flex; gap:8px;">
-      <button onclick="closeTryonModal()" style="flex:1; background:#FDF6F0; color:#3A2D35; border:1px solid #EDD8E0; border-radius:14px; padding:12px; font-size:13px;">Close</button>
-      <button style="flex:2; background:linear-gradient(135deg,#D4748C,#9B7FC4); color:#fff; border:none; border-radius:14px; padding:12px; font-size:13px; font-weight:600;">Start try-on</button>
-    </div>
-  </div>
+<div class="modal" id="inspo-modal" onclick="closeModal('inspo-modal')">
+  <div class="sheet" onclick="event.stopPropagation()"><div class="handle"></div><h2 class="title" style="font-size:22px;margin-bottom:12px">Add inspiration</h2><input type="file" accept="image/*" multiple class="field" /><textarea class="field" placeholder="Describe what you like about these images" style="margin-top:10px"></textarea><button class="primary-btn" style="width:100%;margin-top:10px" onclick="closeModal('inspo-modal')">Save inspiration</button></div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════════════════════ DATA
+/*
+  PAYMENT SETUP PLACEHOLDERS
+  Use Stripe Checkout/Billing on a backend. Do not process card/bank details in this frontend.
+  Founder bank account/payouts are configured in Stripe Dashboard, not inside the app UI.
+*/
+const STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_WITH_YOUR_STRIPE_KEY';
+const STRIPE_PRICE_ID = 'price_REPLACE_WITH_YOUR_MONTHLY_PLAN_ID';
+const CHECKOUT_ENDPOINT = '/api/create-checkout-session';
 
-const CLOSET_ITEMS = [
-  { id:1, name:"White Linen Shirt", brand:"Zara", category:"Tops", color:"#F5F0E8", emoji:"👕", fav:true },
-  { id:2, name:"High-waist Jeans", brand:"Mango", category:"Bottoms", color:"#6B8CAE", emoji:"👖", fav:false },
-  { id:3, name:"Midi Floral Dress", brand:"H&M", category:"Dresses", color:"#E8B4C8", emoji:"👗", fav:true },
-  { id:4, name:"Blazer Beige", brand:"Bershka", category:"Outerwear", color:"#C8B89A", emoji:"🧥", fav:false },
-  { id:5, name:"Mini Skirt White", brand:"Pull&Bear", category:"Bottoms", color:"#F0ECE8", emoji:"🩱", fav:true },
-  { id:6, name:"Ribbed Crop Top", brand:"Zara", category:"Tops", color:"#D4C4E0", emoji:"👚", fav:false },
-  { id:7, name:"Denim Jacket", brand:"Levi's", category:"Outerwear", color:"#5C7A9A", emoji:"🧥", fav:false },
-  { id:8, name:"Ballet Flats", brand:"Mango", category:"Shoes", color:"#C8A882", emoji:"👟", fav:true },
-  { id:9, name:"Gold Hoop Earrings", brand:"Pandora", category:"Accessories", color:"#D4AF37", emoji:"💛", fav:true },
-  { id:10, name:"Satin Slip Dress", brand:"H&M", category:"Dresses", color:"#A8C4B0", emoji:"👗", fav:false },
+const state = {
+  selectedPlan: 'premium', mode: null, currentTab: 'outfit', userLocation: null,
+  weather: null, season: getSeason(), maxPrice: 100, brandFilter: 'all', closetFilter: 'all',
+  profile: {}, selectedOutfit: 0, chatStarted: false, outfitSuggestions: [], inspoImages: []
+};
+
+const DEMO_CLOSET = [
+  { id:'d1', demo:true, name:'Demo cream shirt', brand:'Demo closet', category:'Tops', color:'#F5F0E8', type:'shirt' },
+  { id:'d2', demo:true, name:'Demo straight jeans', brand:'Demo closet', category:'Bottoms', color:'#6B8CAE', type:'jeans' },
+  { id:'d3', demo:true, name:'Demo beige blazer', brand:'Demo closet', category:'Outerwear', color:'#C8B89A', type:'blazer' },
+  { id:'d4', demo:true, name:'Demo black flats', brand:'Demo closet', category:'Shoes', color:'#252027', type:'shoes' },
+  { id:'d5', demo:true, name:'Demo satin skirt', brand:'Demo closet', category:'Bottoms', color:'#BCA6C9', type:'skirt' },
+  { id:'d6', demo:true, name:'Demo soft cardigan', brand:'Demo closet', category:'Outerwear', color:'#E7C7D2', type:'cardigan' }
 ];
 
-const OUTFITS = [
-  { id:1, name:"Soft Sunday", items:[1,5,8,9], vibe:"Casual", colors:["#F5F0E8","#F0ECE8","#C8A882","#D4AF37"] },
-  { id:2, name:"City Girl", items:[6,2,7,8], vibe:"Streetwear", colors:["#D4C4E0","#6B8CAE","#5C7A9A","#C8A882"] },
-  { id:3, name:"Garden Party", items:[3,8,9], vibe:"Feminine", colors:["#E8B4C8","#C8A882","#D4AF37"] },
-  { id:4, name:"Smart Casual", items:[4,2,8,9], vibe:"Office", colors:["#C8B89A","#6B8CAE","#C8A882","#D4AF37"] },
-];
+let realCloset = []; // real paid accounts start empty until the user adds items
 
-const SHOP_ITEMS = [
-  { id:1, name:"Poplin Mini Dress", brand:"Zara", price:"35.95€", img:"https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=400&q=80", store:"Zara Colombo, Lisboa", match:"97%" },
-  { id:2, name:"Knit Cardigan", brand:"H&M", price:"24.99€", img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80", store:"H&M Colombo, Lisboa", match:"94%" },
-  { id:3, name:"Flare Trousers", brand:"Mango", price:"39.99€", img:"https://images.unsplash.com/photo-1594938298603-c8148c4b4e03?w=400&q=80", store:"Mango Amoreiras, Lisboa", match:"91%" },
-  { id:4, name:"Linen Coord Set", brand:"Bershka", price:"49.90€", img:"https://images.unsplash.com/photo-1612336307429-8a898d10e223?w=400&q=80", store:"Bershka Vasco, Lisboa", match:"89%" },
-];
-
-const INSPO_IMGS = [
-  { src:"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=300&q=80", h:200 },
-  { src:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80", h:150 },
-  { src:"https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=300&q=80", h:180 },
-  { src:"https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=300&q=80", h:150 },
-  { src:"https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&q=80", h:200 },
-  { src:"https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=300&q=80", h:150 },
-];
-
-const AI_REPLIES = [
-  "Lovely! And what's the weather like? I see you're in Lisbon — looks like 24°C and sunny today 🌤",
-  "Perfect for a light summer look! Any colour preferences today, or shall I pull from your usual palette?",
-  "Got it! Generating outfits from your closet now — I also found some pieces you might love to complete the look 💫",
-];
-
-// ══════════════════════════════════════════════════════════════════════ STATE
-let currentStep = 0;
-let currentTab = 'outfit';
-let msgCount = 0;
-let outfitsShown = false;
-let selectedOutfit = 0;
-let selectedClosetItems = [];
-let closetFilter = 'all';
-let brandFilter = 'all';
-
-// ══════════════════════════════════════════════════════════════════════ ONBOARDING
-
-function nextStep() {
-  if (currentStep < 2) {
-    document.getElementById('step-' + currentStep).style.display = 'none';
-    currentStep++;
-    document.getElementById('step-' + currentStep).style.display = 'block';
-    document.getElementById('back-btn').style.display = currentStep > 0 ? 'inline-block' : 'none';
-    if (currentStep === 2) document.getElementById('next-btn').textContent = "Let's go ✨";
-    updateDots();
-  } else {
-    launchApp();
-  }
-}
-
-function prevStep() {
-  if (currentStep > 0) {
-    document.getElementById('step-' + currentStep).style.display = 'none';
-    currentStep--;
-    document.getElementById('step-' + currentStep).style.display = 'block';
-    document.getElementById('back-btn').style.display = currentStep > 0 ? 'inline-block' : 'none';
-    document.getElementById('next-btn').textContent = 'Continue';
-    updateDots();
-  }
-}
-
-function updateDots() {
-  for (let i = 0; i < 3; i++) {
-    const d = document.getElementById('dot-' + i);
-    d.className = 'dot ' + (i === currentStep ? 'active' : 'inactive');
-  }
-}
-
-function selectChip(btn, groupId) {
-  document.querySelectorAll('#' + groupId + ' .chip').forEach(b => {
-    b.className = 'chip inactive';
-  });
-  btn.className = 'chip active';
-}
-
-function selectVibeChip(btn) {
-  document.querySelectorAll('#vibe-chips .chip').forEach(b => {
-    b.className = 'chip purple-inactive';
-  });
-  btn.className = 'chip purple-active';
-}
-
-function launchApp() {
-  document.getElementById('onboarding').style.display = 'none';
-  const app = document.getElementById('app');
-  app.style.display = 'flex';
-  initApp();
-}
-
-// ══════════════════════════════════════════════════════════════════════ INIT APP
-
-function initApp() {
-  renderNav();
-  addAIMessage("Hi! I'm your Styler AI. Tell me about your event and I'll put together some outfits for you. What's the occasion?");
-  renderCloset();
-  renderInspo();
-  renderBrowse();
-  renderShopGrid('outfit-shop-grid', SHOP_ITEMS.slice(0, 2));
-  renderProfileRows();
-  renderSettings();
-  document.getElementById('chat-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  });
-  renderUploadOptions();
-}
-
-// ══════════════════════════════════════════════════════════════════════ BOTTOM NAV
+/* IMPORTANT: keep this empty unless you populate it with verified products from brand APIs or your backend.
+   Every product must come with real name, price, official image, product URL, and verified store data. */
+let verifiedProductCatalog = [];
 
 const TABS = [
-  { id:'outfit', label:'Outfit', icon:'✦' },
-  { id:'closet', label:'Closet', icon:'🪞' },
-  { id:'inspo', label:'Inspo', icon:'📌' },
-  { id:'browse', label:'Browse', icon:'🛍' },
-  { id:'account', label:'You', icon:'☽' },
+  {id:'outfit', label:'Outfit', icon:'OUT'}, {id:'closet', label:'Closet', icon:'CLS'},
+  {id:'inspo', label:'Inspo', icon:'INS'}, {id:'browse', label:'Browse', icon:'BRW'},
+  {id:'account', label:'You', icon:'YOU'}
 ];
+const quickPrompts = ['Outfit for today','Dinner outfit','Work outfit','Rainy day outfit','Make it warmer','Use different shoes','More formal','More colorful'];
+const brands = ['all','Zara','H&M','Mango','Bershka','Pull&Bear','COS','Massimo Dutti'];
+const closetCategories = ['all','Tops','Bottoms','Dresses','Outerwear','Shoes','Accessories'];
 
-function renderNav() {
-  const nav = document.getElementById('bottom-nav');
-  nav.innerHTML = TABS.map(t => `
-    <button class="nav-btn" onclick="switchTab('${t.id}')" id="nav-${t.id}">
-      <div class="nav-icon ${t.id === currentTab ? 'active' : ''}" id="nav-icon-${t.id}">${t.icon}</div>
-      <span class="nav-label ${t.id === currentTab ? 'active' : 'inactive'}" id="nav-label-${t.id}">${t.label}</span>
-    </button>
-  `).join('');
+function selectPlan(plan){
+  state.selectedPlan = plan;
+  document.querySelectorAll('.plan').forEach(p => p.classList.toggle('selected', p.dataset.plan === plan));
 }
-
-function switchTab(id) {
-  // Hide all
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-
-  // Update nav
-  TABS.forEach(t => {
-    document.getElementById('nav-icon-' + t.id).className = 'nav-icon' + (t.id === id ? ' active' : '');
-    document.getElementById('nav-label-' + t.id).className = 'nav-label ' + (t.id === id ? 'active' : 'inactive');
-  });
-
-  // Topbar meta
-  document.getElementById('topbar-meta').style.display = id === 'outfit' ? 'inline' : 'none';
-  currentTab = id;
+function continueFromPlan(){
+  if(state.selectedPlan === 'demo') launchApp('demo');
+  else startCheckoutOrProfile();
 }
-
-// ══════════════════════════════════════════════════════════════════════ CHAT
-
-function addAIMessage(text) {
-  const area = document.getElementById('chat-messages');
-  const row = document.createElement('div');
-  row.className = 'bubble-row ai';
-  row.innerHTML = `
-    <div class="avatar" style="width:28px;height:28px;font-size:11px;flex-shrink:0;">S</div>
-    <div class="bubble ai">${text}</div>
-  `;
-  area.appendChild(row);
-  area.scrollTop = area.scrollHeight;
+function startCheckoutOrProfile(){
+  /* In production, call your backend:
+  fetch(CHECKOUT_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ priceId: STRIPE_PRICE_ID }) })
+    .then(r=>r.json()).then(({url})=> location.href = url);
+  After successful payment/sign-in, redirect back and show profile setup.
+  */
+  document.getElementById('choose-plan-step').classList.add('hidden');
+  document.getElementById('profile-step').classList.remove('hidden');
 }
-
-function addUserMessage(text) {
-  const area = document.getElementById('chat-messages');
-  const row = document.createElement('div');
-  row.className = 'bubble-row user';
-  row.innerHTML = `<div class="bubble user">${text}</div>`;
-  area.appendChild(row);
-  area.scrollTop = area.scrollHeight;
+function backToPlans(){document.getElementById('profile-step').classList.add('hidden');document.getElementById('choose-plan-step').classList.remove('hidden')}
+function finishProfile(e){
+  e.preventDefault();
+  state.profile = {
+    name: val('p-name') || 'Styler user', age: val('p-age'), height: val('p-height'), size: val('p-size'),
+    body: val('p-body'), undertone: val('p-undertone'), skin: val('p-skin'), eyes: val('p-eyes'),
+    hair: val('p-hair'), hairPattern: val('p-hair-pattern'), favoriteColors: val('p-fav-colors'),
+    avoidColors: val('p-avoid-colors'), budget: val('p-budget'), brands: val('p-brands'),
+    styles: val('p-styles'), lifestyle: val('p-lifestyle'), extra: val('p-extra')
+  };
+  launchApp('paid');
 }
-
-function sendMessage() {
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text) return;
-  addUserMessage(text);
-  input.value = '';
-
-  setTimeout(() => {
-    const reply = AI_REPLIES[Math.min(msgCount, AI_REPLIES.length - 1)];
-    addAIMessage(reply);
-    msgCount++;
-    if (msgCount >= 2 && !outfitsShown) {
-      showOutfits();
-      outfitsShown = true;
-      document.getElementById('quick-chips').style.display = 'none';
-    }
-  }, 900);
+function launchApp(mode){
+  state.mode = mode;
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('app').style.display='block';
+  initApp();
 }
-
-function setInput(text) {
-  document.getElementById('chat-input').value = text;
-  document.getElementById('chat-input').focus();
+function goHome(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('onboarding').style.display='flex';
+  state.chatStarted=false; document.getElementById('chat').innerHTML='';
 }
-
-// ══════════════════════════════════════════════════════════════════════ OUTFIT RESULTS
-
-function showOutfits() {
-  document.getElementById('outfit-results').style.display = 'block';
-  renderOutfitCards();
-  renderOutfitDetail(0);
+function initApp(){
+  renderNav(); renderModeBanner(); renderQuickPrompts(); renderClosetFilters(); renderCloset(); renderBrandFilters(); renderBrowse(); renderAccount(); renderAddItemOptions(); renderInspo();
+  requestLocation(false);
+  addAIMessage(state.mode === 'demo' ? 'Welcome to the demo. You can explore sample outfits and see how Styler works.' : 'Tell me what you are dressing for, and I will build options from your closet.');
+  document.getElementById('chat-input').addEventListener('keydown', e => { if(e.key==='Enter' && !e.shiftKey){e.preventDefault();sendMessage();} });
 }
-
-function renderOutfitCards() {
-  const row = document.getElementById('outfits-row');
-  row.innerHTML = OUTFITS.map((o, i) => {
-    const items = CLOSET_ITEMS.filter(c => o.items.includes(c.id));
-    const cells = items.slice(0, 4).map((item, ci) => {
-      const radii = ['12px 0 0 0','0 12px 0 0','0 0 0 12px','0 0 12px 0'];
-      return `<div class="outfit-cell" style="background:${item.color}55; border-radius:${radii[ci]};">${item.emoji}</div>`;
-    }).join('');
-    const dots = o.colors.slice(0,4).map(c =>
-      `<span class="color-dot" style="width:12px;height:12px;background:${c};"></span>`
-    ).join('');
-    return `
-      <div class="outfit-card ${i === selectedOutfit ? 'selected' : ''}" id="ocard-${i}" onclick="selectOutfit(${i})">
-        <div class="outfit-grid">${cells}</div>
-        <p style="font-size:13px;font-weight:600;color:#3A2D35;">${o.name}</p>
-        <p style="font-size:11px;color:#9A8A90;margin-top:2px;">${o.vibe}</p>
-        <div style="display:flex;gap:3px;margin-top:6px;flex-wrap:wrap;">${dots}</div>
-      </div>
-    `;
-  }).join('');
+function renderModeBanner(){
+  const b = document.getElementById('mode-banner');
+  b.className = 'notice ' + (state.mode === 'demo' ? '' : 'success');
+  b.textContent = state.mode === 'demo'
+    ? 'Free demo mode: sample data only. This does not log you into a real account.'
+    : 'Subscribed account: your real closet starts empty until you add clothing items.';
 }
-
-function selectOutfit(i) {
-  selectedOutfit = i;
-  document.querySelectorAll('.outfit-card').forEach((c, ci) => {
-    c.className = 'outfit-card ' + (ci === i ? 'selected' : '');
-  });
-  renderOutfitDetail(i);
+function renderNav(){
+  document.getElementById('bottom-nav').innerHTML = TABS.map(t => `<button class="nav-btn ${state.currentTab===t.id?'active':''}" onclick="switchTab('${t.id}')"><div class="nav-dot">${t.icon}</div><div class="nav-label">${t.label}</div></button>`).join('');
 }
-
-function renderOutfitDetail(i) {
-  const o = OUTFITS[i];
-  const items = CLOSET_ITEMS.filter(c => o.items.includes(c.id));
-  const detail = document.getElementById('outfit-detail');
-  const itemsHTML = items.map(item => `
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#F7E1E8;border-radius:12px;">
-      <span style="font-size:18px;">${item.emoji}</span>
-      <div>
-        <p style="font-size:11px;font-weight:600;color:#3A2D35;margin:0;">${item.name}</p>
-        <p style="font-size:10px;color:#9A8A90;margin:0;">${item.brand}</p>
-      </div>
-    </div>
-  `).join('');
-  detail.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <h4 style="font-size:14px;font-weight:600;color:#3A2D35;">${o.name}</h4>
-      <span class="tag">${o.vibe}</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">${itemsHTML}</div>
-    <button onclick="openTryonModal()" style="width:100%;background:linear-gradient(135deg,#F2C4CE,#E8DCF5);border:none;border-radius:14px;padding:10px;font-size:13px;font-weight:600;color:#B85A72;">Try on virtually ✨</button>
-  `;
+function switchTab(id){
+  state.currentTab=id;
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  renderNav();
 }
-
-// ══════════════════════════════════════════════════════════════════════ SHOP CARD
-
-function shopCardHTML(item) {
-  return `
-    <div class="shop-card">
-      <div style="position:relative;">
-        <img src="${item.img}" alt="${item.name}" onerror="this.style.background='#F7E1E8';this.src=''" />
-        <div class="match-badge">${item.match} match</div>
-      </div>
-      <div class="shop-card-body">
-        <p style="font-size:13px;font-weight:600;color:#3A2D35;">${item.name}</p>
-        <p style="font-size:12px;color:#9A8A90;margin:2px 0 6px;">${item.brand}</p>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <span style="font-size:15px;font-weight:700;color:#B85A72;">${item.price}</span>
-          <span class="tag sage">${item.store.split(',')[1]?.trim() || 'Lisboa'}</span>
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <button style="flex:1;background:#D4748C;color:#fff;border:none;border-radius:10px;padding:8px 0;font-size:12px;font-weight:600;">Buy</button>
-          <button style="flex:1;background:#F7E1E8;color:#B85A72;border:1px solid #EDD8E0;border-radius:10px;padding:8px 0;font-size:12px;font-weight:600;">Wishlist</button>
-        </div>
-        <button style="width:100%;background:transparent;color:#9B7FC4;border:1px solid #E8DCF5;border-radius:10px;padding:7px 0;font-size:11px;">📍 Maps — ${item.store.split(',')[0]}</button>
-      </div>
-    </div>
-  `;
+function renderQuickPrompts(){document.getElementById('quick-prompts').innerHTML = quickPrompts.map(p=>`<button class="chip" onclick="setInput('${esc(p)}')">${p}</button>`).join('')}
+function setInput(text){document.getElementById('chat-input').value=text;document.getElementById('chat-input').focus()}
+function addAIMessage(text){
+  const chat=document.getElementById('chat'); const row=document.createElement('div'); row.className='bubble-row ai';
+  row.innerHTML=`<div class="avatar">S</div><div class="bubble ai">${text}</div>`; chat.appendChild(row); row.scrollIntoView({block:'nearest'});
 }
-
-function renderShopGrid(containerId, items) {
-  document.getElementById(containerId).innerHTML = items.map(shopCardHTML).join('');
+function addUserMessage(text){
+  const chat=document.getElementById('chat'); const row=document.createElement('div'); row.className='bubble-row user';
+  row.innerHTML=`<div class="bubble user">${esc(text)}</div>`; chat.appendChild(row); row.scrollIntoView({block:'nearest'});
 }
-
-// ══════════════════════════════════════════════════════════════════════ CLOSET
-
-function renderCloset(filter) {
-  filter = filter || closetFilter;
-  const grid = document.getElementById('closet-grid');
-  let items = CLOSET_ITEMS;
-  if (filter === 'Favs') items = items.filter(i => i.fav);
-  else if (filter !== 'all') items = items.filter(i => i.category === filter);
-
-  grid.innerHTML = items.map(item => {
-    const sel = selectedClosetItems.includes(item.id);
-    return `
-      <div class="closet-item ${sel ? 'selected' : ''}" id="ci-${item.id}" onclick="toggleClosetItem(${item.id})" style="background:${sel ? item.color+'55' : '#fff'};">
-        ${item.fav ? '<span style="position:absolute;top:6px;right:8px;font-size:10px;color:#D4748C;">♥</span>' : ''}
-        <div class="closet-emoji-box" style="background:${item.color}40;">${item.emoji}</div>
-        <p style="font-size:10px;font-weight:600;color:#3A2D35;text-align:center;line-height:1.3;">${item.name}</p>
-        <p style="font-size:9px;color:#9A8A90;">${item.brand}</p>
-      </div>
-    `;
-  }).join('');
+function sendMessage(){
+  const input=document.getElementById('chat-input'); const text=input.value.trim(); if(!text) return;
+  addUserMessage(text); input.value='';
+  const closet = getCloset();
+  if(state.mode==='paid' && closet.length===0){
+    addAIMessage('Your closet is empty. Add a few items first, then I can build outfit suggestions from your real wardrobe.');
+    switchTab('closet'); return;
+  }
+  if(!state.chatStarted || state.outfitSuggestions.length===0){
+    state.outfitSuggestions = buildOutfitsFromCloset(text, closet);
+    state.chatStarted = true;
+    addAIMessage(buildNaturalReply(text));
+  } else {
+    state.outfitSuggestions = adjustOutfits(text, state.outfitSuggestions, closet);
+    addAIMessage('Updated the suggestions based on your request. You can keep refining the outfits.');
+  }
+  renderOutfits(); loadVerifiedProducts();
 }
-
-function toggleClosetItem(id) {
-  if (selectedClosetItems.includes(id)) {
-    selectedClosetItems = selectedClosetItems.filter(x => x !== id);
-  } else {
-    selectedClosetItems.push(id);
-  }
-  renderCloset(closetFilter);
-  const bar = document.getElementById('tryon-bar');
-  const btn = document.getElementById('tryon-btn');
-  if (selectedClosetItems.length > 0) {
-    bar.style.display = 'block';
-    btn.textContent = `Try on ${selectedClosetItems.length} selected item${selectedClosetItems.length > 1 ? 's' : ''} ✨`;
-  } else {
-    bar.style.display = 'none';
-  }
+function buildNaturalReply(text){
+  const loc = state.userLocation?.city ? ` in ${state.userLocation.city}` : '';
+  const weather = state.weather ? ` considering ${state.weather.summary}` : '';
+  const profile = state.mode==='paid' && state.profile.favoriteColors ? ` I also considered your preferred colors: ${state.profile.favoriteColors}.` : '';
+  return `I prepared outfit options from your ${state.mode==='demo'?'demo':'digital'} closet${loc}${weather}.${profile}`;
 }
-
-function filterCloset(f, btn) {
-  closetFilter = f;
-  document.querySelectorAll('#closet-filters .pill-btn').forEach(b => b.className = 'pill-btn');
-  btn.className = 'pill-btn active';
-  renderCloset(f);
+function getCloset(){return state.mode==='demo' ? DEMO_CLOSET : realCloset}
+function buildOutfitsFromCloset(prompt, closet){
+  const tops = closet.filter(i=>i.category==='Tops'), bottoms=closet.filter(i=>i.category==='Bottoms'), outer=closet.filter(i=>i.category==='Outerwear'), shoes=closet.filter(i=>i.category==='Shoes'), acc=closet.filter(i=>i.category==='Accessories');
+  const baseNames = ['Clean profile look','Soft balanced outfit','Practical day outfit'];
+  return baseNames.map((name, idx)=>({
+    id:'o'+idx, name, reason: reasonFor(prompt, idx),
+    items: [tops[idx%tops.length], bottoms[idx%bottoms.length], outer[idx%Math.max(outer.length,1)], shoes[idx%Math.max(shoes.length,1)], acc[idx%Math.max(acc.length,1)]].filter(Boolean)
+  })).filter(o=>o.items.length>0);
 }
-
-// ══════════════════════════════════════════════════════════════════════ INSPO
-
-function renderInspo() {
-  const grid = document.getElementById('inspo-grid');
-  grid.innerHTML = INSPO_IMGS.map(img => `
-    <div class="inspo-item">
-      <img src="${img.src}" style="height:${img.h}px;" alt="inspo" />
-      <div class="inspo-overlay">
-        <button style="background:rgba(255,255,255,0.9);color:#B85A72;border:none;border-radius:10px;padding:4px 10px;font-size:10px;font-weight:600;">Find items ✦</button>
-      </div>
-    </div>
-  `).join('');
+function reasonFor(prompt, idx){
+  const p=prompt.toLowerCase();
+  if(p.includes('rain')) return 'More practical for wet weather; add water-resistant outerwear if available.';
+  if(p.includes('formal')||p.includes('work')) return 'Polished balance using structured items where available.';
+  if(p.includes('night')||p.includes('dinner')) return 'Designed to feel elevated without overcomplicating the outfit.';
+  return idx===0?'Simple and wearable for the request.':idx===1?'Alternative silhouette using your closet.':'Comfort-focused backup option.';
 }
-
-// ══════════════════════════════════════════════════════════════════════ BROWSE
-
-function renderBrowse(filter) {
-  filter = filter || brandFilter;
-  let items = SHOP_ITEMS;
-  if (filter !== 'all') items = items.filter(i => i.brand === filter);
-  renderShopGrid('browse-grid', items);
+function adjustOutfits(text, outfits, closet){
+  const t=text.toLowerCase();
+  return outfits.map((o,idx)=>{
+    let items=[...o.items]; let reason=o.reason;
+    if(t.includes('shoe')){const shoes=closet.filter(i=>i.category==='Shoes' && !items.some(x=>x.id===i.id)); if(shoes[0]) items=items.filter(i=>i.category!=='Shoes').concat(shoes[0]); reason='Swapped the shoes while keeping the outfit balanced.';}
+    if(t.includes('warm')){const outer=closet.filter(i=>i.category==='Outerwear'); if(outer[0] && !items.some(i=>i.category==='Outerwear')) items.push(outer[0]); reason='Added warmth using available outerwear.';}
+    if(t.includes('formal')) reason='Adjusted toward a cleaner, more structured outfit.';
+    if(t.includes('color')) reason='Adjusted with more visible color contrast from available items.';
+    return {...o, name:o.name.replace('Updated ',''), reason, items};
+  });
 }
-
-function filterBrand(b, btn) {
-  brandFilter = b;
-  document.querySelectorAll('#brand-filters .pill-btn').forEach(x => x.className = 'pill-btn');
-  btn.className = 'pill-btn active';
-  renderBrowse(b);
+function renderOutfits(){
+  document.getElementById('outfit-results').classList.remove('hidden');
+  const row=document.getElementById('outfits-row');
+  row.innerHTML=state.outfitSuggestions.map((o,i)=>`<div class="outfit-card ${i===state.selectedOutfit?'selected':''}" onclick="selectOutfit(${i})"><div class="outfit-grid">${o.items.slice(0,4).map(item=>`<div class="outfit-cell" style="background:${item.color}55">${esc(item.type||item.category)}</div>`).join('')}</div><div style="font-weight:800;font-size:13px">${o.name}</div><div class="small">${o.items.length} closet items</div></div>`).join('');
+  renderOutfitDetail();
 }
-
-function updatePrice(val) {
-  document.getElementById('price-label').textContent = `0€ – ${val}€`;
+function selectOutfit(i){state.selectedOutfit=i;renderOutfits()}
+function renderOutfitDetail(){
+  const o=state.outfitSuggestions[state.selectedOutfit]; if(!o)return;
+  document.getElementById('outfit-detail').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="font-size:15px">${o.name}</h3><span class="tag">From closet</span></div><p class="small" style="margin-bottom:10px">${o.reason}</p>${o.items.map(i=>`<div style="display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:9px 0"><span style="font-size:13px;font-weight:700">${i.name}</span><span class="small">${i.brand}</span></div>`).join('')}`;
 }
-
-function setPrice(val) {
-  document.querySelector('#tab-browse input[type=range]').value = val;
-  updatePrice(val);
+function loadVerifiedProducts(){
+  /* Production idea:
+     fetch(`/api/products?lat=${state.userLocation?.lat}&lng=${state.userLocation?.lng}&maxPrice=${state.maxPrice}&brands=${state.brandFilter}`)
+       .then(r=>r.json()).then(products=>{ verifiedProductCatalog = products.filter(validateProduct); renderExplore(); renderBrowse(); });
+  */
+  renderExplore(); renderBrowse();
 }
-
-// ══════════════════════════════════════════════════════════════════════ ACCOUNT
-
-function renderProfileRows() {
-  const rows = [
-    { label:'Body shape', val:'Hourglass' },
-    { label:'Skin tone', val:'Medium warm' },
-    { label:'Your style', val:'Soft feminine, minimal' },
-    { label:'Your size', val:'S / 36' },
-  ];
-  document.getElementById('profile-rows').innerHTML = rows.map((r, i) => `
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:${i < rows.length-1 ? '1px solid #EDD8E0' : 'none'};">
-      <span style="font-size:13px;color:#9A8A90;">${r.label}</span>
-      <span style="font-size:13px;font-weight:600;color:#3A2D35;">${r.val}</span>
-    </div>
-  `).join('');
-
-  const colors = ['#E8B4C8','#D4C4E0','#C8A882','#F5F0E8'];
-  document.getElementById('color-dots').innerHTML = colors.map(c =>
-    `<span class="color-dot" style="width:20px;height:20px;background:${c};"></span>`
-  ).join('') + `<button style="width:20px;height:20px;border-radius:50%;background:transparent;border:1.5px dashed #EDD8E0;font-size:12px;color:#9A8A90;display:inline-flex;align-items:center;justify-content:center;">+</button>`;
+function validateProduct(p){return p && p.verified===true && p.name && p.brand && Number.isFinite(p.price) && p.currency && p.image && p.url && p.storeName && p.mapsUrl}
+function filteredProducts(){
+  const q=(document.getElementById('browse-search')?.value||'').toLowerCase();
+  return verifiedProductCatalog.filter(validateProduct).filter(p=>p.price<=state.maxPrice).filter(p=>state.brandFilter==='all'||p.brand===state.brandFilter).filter(p=>!q || `${p.name} ${p.brand}`.toLowerCase().includes(q));
 }
-
-function renderSettings() {
-  const items = [
-    { icon:'✏️', label:'Edit style profile' },
-    { icon:'🔔', label:'Notifications' },
-    { icon:'🔒', label:'Privacy' },
-    { icon:'💬', label:'Help & feedback' },
-    { icon:'↩️', label:'Sign out' },
-  ];
-  document.getElementById('settings-list').innerHTML = items.map((s, i) => `
-    <button class="settings-row" ${i === items.length-1 ? 'style="border-bottom:none;"' : ''}>
-      <span style="font-size:16px;">${s.icon}</span>
-      <span style="font-size:14px;color:#3A2D35;">${s.label}</span>
-      <span style="margin-left:auto;color:#BFB0B6;font-size:12px;">›</span>
-    </button>
-  `).join('');
+function renderExplore(){
+  const items=filteredProducts();
+  const note=document.getElementById('explore-note');
+  note.textContent = items.length ? 'Only verified products are shown here.' : 'No verified live products are loaded. Connect brand/product APIs before showing items, so the AI does not invent products, prices, images, links, or stores.';
+  document.getElementById('explore-grid').innerHTML=items.slice(0,4).map(productCard).join('');
 }
-
-// ══════════════════════════════════════════════════════════════════════ MODALS
-
-function renderUploadOptions() {
-  const opts = [
-    { icon:'📷', label:'Take a photo', sub:'AI will clean it up' },
-    { icon:'🔗', label:'Paste a link', sub:'From any brand website' },
-    { icon:'✏️', label:'Describe it', sub:"I'll find the exact item" },
-    { icon:'🤳', label:'Upload a selfie', sub:"I'll detect your items" },
-  ];
-  document.getElementById('upload-options').innerHTML = opts.map(o => `
-    <button onclick="closeUploadModal()" style="width:100%;background:#FDF6F0;border:1px solid #EDD8E0;border-radius:16px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:left;">
-      <span style="font-size:22px;">${o.icon}</span>
-      <div>
-        <p style="font-size:13px;font-weight:600;color:#3A2D35;margin:0;">${o.label}</p>
-        <p style="font-size:11px;color:#9A8A90;margin:0;">${o.sub}</p>
-      </div>
-    </button>
-  `).join('');
+function renderBrowse(){
+  const items=filteredProducts();
+  document.getElementById('browse-note').textContent = items.length ? 'Showing verified products within your selected filters.' : 'Browse is empty until your backend returns verified real products from official brand sources.';
+  document.getElementById('browse-grid').innerHTML=items.map(productCard).join('');
 }
-
-function openUploadModal() {
-  document.getElementById('upload-modal').classList.add('open');
+function productCard(p){
+  return `<div class="shop-card"><div style="position:relative"><img src="${p.image}" alt="${esc(p.name)}"><div class="match-badge">Verified</div></div><div class="shop-body"><div style="font-size:13px;font-weight:800">${esc(p.name)}</div><div class="small">${esc(p.brand)}</div><div style="font-size:15px;font-weight:800;color:var(--rose-dark);margin-top:6px">${p.price}${p.currency}</div><a class="product-link" href="${p.url}" target="_blank" rel="noopener">View item</a><a class="map-link" href="${p.mapsUrl}" target="_blank" rel="noopener">Closest store: ${esc(p.storeName)}</a></div></div>`;
 }
-function closeUploadModal() {
-  document.getElementById('upload-modal').classList.remove('open');
+function renderClosetFilters(){document.getElementById('closet-filters').innerHTML=closetCategories.map(c=>`<button class="chip ${state.closetFilter===c?'active':''}" onclick="setClosetFilter('${c}')">${c}</button>`).join('')}
+function setClosetFilter(c){state.closetFilter=c;renderClosetFilters();renderCloset()}
+function renderCloset(){
+  const closet=getCloset(); let items=closet.filter(i=>state.closetFilter==='all'||i.category===state.closetFilter);
+  document.getElementById('closet-status').textContent = state.mode==='demo' ? 'Demo closet: these are sample items only.' : 'Real closet: empty by default until the user adds items.';
+  document.getElementById('closet-grid').innerHTML = items.length ? items.map(i=>`<div class="closet-item"><div class="closet-swatch" style="background:${i.color}55">${i.category}</div><div style="font-size:13px;font-weight:800">${esc(i.name)}</div><div class="small">${esc(i.brand)}${i.demo?' · demo':''}</div></div>`).join('') : `<div class="empty" style="grid-column:1/-1"><h3 style="font-size:15px;margin-bottom:5px">No closet items yet</h3><p class="small">Add clothing by photo, camera, link, or manual description.</p></div>`;
 }
-function openTryonModal() {
-  document.getElementById('tryon-modal').classList.add('open');
+function renderBrandFilters(){document.getElementById('brand-filters').innerHTML=brands.map(b=>`<button class="chip ${state.brandFilter===b?'active':''}" onclick="setBrand('${b}')">${b==='all'?'All':b}</button>`).join('')}
+function setBrand(b){state.brandFilter=b;renderBrandFilters();renderBrowse();renderExplore()}
+function setMaxPrice(v){state.maxPrice=Number(v);document.getElementById('price-label').textContent=`${v}€`;renderBrowse();renderExplore()}
+function renderInspo(){
+  document.getElementById('inspo-grid').innerHTML = state.inspoImages.length ? state.inspoImages.map(src=>`<div class="inspo-item"><img src="${src}" alt="Style inspiration"></div>`).join('') : `<div class="empty"><h3 style="font-size:14px">No inspo yet</h3><p class="small">Add pictures or import a Pinterest board.</p></div>`;
 }
-function closeTryonModal() {
-  document.getElementById('tryon-modal').classList.remove('open');
+function renderAccount(){
+  const paid=state.mode==='paid'; const name=paid?(state.profile.name||'Styler user'):'Demo user';
+  document.getElementById('account-name').textContent=name; document.getElementById('account-avatar').textContent=name.slice(0,1).toUpperCase(); document.getElementById('account-plan').textContent=paid?'Premium subscription':'Free demo';
+  const rows=paid?state.profile:{mode:'Free demo', note:'No real account. Sample data only.'};
+  document.getElementById('profile-summary').innerHTML=Object.entries(rows).filter(([k,v])=>v).map(([k,v])=>`<div style="display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:9px 0"><span class="small">${labelize(k)}</span><span style="font-size:12px;font-weight:800;text-align:right">${esc(String(v))}</span></div>`).join('');
+  document.getElementById('subscription-box').innerHTML=paid?`<p class="small">Styler Premium · 8€/month</p><button class="secondary-btn" style="width:100%;margin-top:10px" onclick="alert('Open Stripe customer portal from your backend here.')">Manage subscription</button>`:`<p class="small">Demo only. Subscribe to save a real profile and closet.</p><button class="primary-btn" style="width:100%;margin-top:10px" onclick="goHome();selectPlan('premium')">Subscribe</button>`;
 }
+function renderAddItemOptions(){
+  const opts=[['Take a photo','Use camera capture and image cleanup.'],['Upload a photo','Upload an item image from device.'],['Paste product link','Import product data from the item page.'],['Describe manually','Add category, color, fabric, fit, and notes.']];
+  document.getElementById('add-item-options').innerHTML=opts.map(o=>`<button class="ghost-btn" style="width:100%;text-align:left;margin-bottom:8px" onclick="addPlaceholderItem('${o[0]}')"><strong>${o[0]}</strong><br><span class="small">${o[1]}</span></button>`).join('');
+}
+function addPlaceholderItem(method){
+  if(state.mode==='demo'){alert('Demo mode does not save real closet items. Subscribe to create a real closet.');closeModal('add-item-modal');return;}
+  realCloset.push({id:'r'+Date.now(),name:'New item via '+method,brand:'User closet',category:'Tops',color:'#F5F0E8',type:'item'});
+  closeModal('add-item-modal');renderCloset();
+}
+function openAddItem(){document.getElementById('add-item-modal').classList.add('open')}
+function openInspoModal(){document.getElementById('inspo-modal').classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function requestLocation(showAlert=true){
+  if(!navigator.geolocation){manualLocation();return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    state.userLocation={lat:pos.coords.latitude,lng:pos.coords.longitude,city:'Current location'};
+    updateWeatherPlaceholder();
+  },()=>{ if(showAlert) manualLocation(); updateTopMeta(); },{enableHighAccuracy:true,timeout:6000});
+}
+function manualLocation(){const city=prompt('Location permission was not available. Enter your city:'); if(city){state.userLocation={city,lat:null,lng:null}; updateWeatherPlaceholder();}}
+function updateWeatherPlaceholder(){
+  /* Production: call your backend weather endpoint. Example: /api/weather?lat=...&lng=...
+     Never expose private weather API keys in frontend code. */
+  state.weather={summary:'local weather when connected', temp:null}; updateTopMeta();
+}
+function updateTopMeta(){
+  const loc=state.userLocation?.city || 'Location not set'; const weather=state.weather?.summary || 'Weather not loaded';
+  document.getElementById('top-meta').innerHTML=`${esc(loc)}<br>${esc(weather)} · ${state.season}`;
+}
+function getSeason(){const m=new Date().getMonth()+1;return m>=3&&m<=5?'spring':m>=6&&m<=8?'summer':m>=9&&m<=11?'autumn':'winter'}
+function val(id){return document.getElementById(id).value.trim()} function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function labelize(k){return k.replace(/([A-Z])/g,' $1').replace(/^./,s=>s.toUpperCase())}
 </script>
 </body>
 </html>
